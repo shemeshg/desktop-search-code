@@ -1,6 +1,8 @@
 # Desktop search
 Search duckduckgo api and manage bookmarks using web application
 
+http://shemeshg.github.io/desktop-search
+
 ## Project setup
 
 ```bash
