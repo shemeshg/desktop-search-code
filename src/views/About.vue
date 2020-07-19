@@ -11,6 +11,9 @@
       <h2>Admin</h2>
       <p>Chrome extention (drag to your chrome bookmark bar)</p>
       <p>Application Configuration.</p>
+      <h2>Built With</h2>
+      <p>Vue</p>
+      <p>Icon made by Pixel perfect from www.flaticon.com</p>    
       <h2>Authors</h2>
       <ul>
       <li><strong>shemeshg</strong></li>
