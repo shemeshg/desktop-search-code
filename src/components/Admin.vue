@@ -18,7 +18,6 @@
 
     <h2>External search</h2>
     <b-card class="mb-2">
-      <b-link v-on:click="addExternalSearch()">Add</b-link>
       <ul>
         <div v-for="(externalSearch, idx) in externalSearchs" :key="externalSearch.uuid">
           <b-form-row>
@@ -38,7 +37,7 @@
             </b-form-group>
           </b-form-row>
           <span v-if="idx !== 0">
-            <b-link v-on:click="deleteExternalSearch(externalSearch, idx)">Del</b-link>|
+            <b-link v-on:click="deleteExternalSearch(externalSearch, idx)">Del</b-link> &nbsp;|
           </span>
           <b-link v-on:click="addExternalSearchParam(externalSearch)">Add param</b-link>
           <b-card
@@ -77,6 +76,7 @@
           </b-card>
         </div>
       </ul>
+      <b-link v-on:click="addExternalSearch()">Add</b-link>
     </b-card>
 
     <b-card class="mb-2">
@@ -178,8 +178,8 @@ window.open(url, "_blank");
 
   async addExternalSearch() {
     const r = new ExternalSearch(undefined);
-    r.name = "duckduckgo";
-    r.url = "https://duckduckgo.com/";
+    r.name = "new search";
+    r.url = "https://domain/search";
     const p = new ExternalSearchParam();
     p.paramName = "q";
     p.paramValueIsSearchText = true;
@@ -234,14 +234,14 @@ window.open(url, "_blank");
 
   // eslint-disable-next-line
   emitExternalSearchUrl(externalSearch: TExternalSearch, event: any) {
-    externalSearch.url = event.target.value;
+    externalSearch.url = event;
     const w = new ExternalSearch(externalSearch);
     return w.save();
   }
 
   // eslint-disable-next-line
   emitExternalSearchName(externalSearch: TExternalSearch, event: any) {
-    externalSearch.name = event.target.value;
+    externalSearch.name = event;
     const w = new ExternalSearch(externalSearch);
     return w.save();
   }
