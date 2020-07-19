@@ -25,15 +25,15 @@
         v-if="!item.relatedSubject"
         v-on:click="doToggleLucky(item)"
       >Feel lucky</b-badge>
-      <b-badge variant v-if="item.relatedSubject" v-on:click="doToggleLucky(item)">Feel lucky</b-badge>
-      |
+      <b-badge variant v-if="item.relatedSubject" v-on:click="doToggleLucky(item)">Feel lucky</b-badge>|
       <b-icon
         icon="heart-fill"
         variant="success"
         v-if="item.isFavorite"
         v-on:click="doToggleFavorite(item)"
       ></b-icon>
-      <b-icon icon="heart" variant v-if="!item.isFavorite" v-on:click="doToggleFavorite(item)"></b-icon>
+      <b-icon icon="heart" variant v-if="!item.isFavorite" v-on:click="doToggleFavorite(item)"></b-icon> 
+      <div v-if="showTags">{{item.tags}}</div>
     </b-card>
   </div>
 </template>
@@ -49,6 +49,7 @@ import { TLocalBookmark, LocalBookmark } from "../src/dxdb/localBookmark";
 @Component
 export default class LocalBookmarkListItems extends Vue {
   @Prop() searchResult!: TLocalBookmark[];
+  @Prop() showTags!: boolean;
 
   doToggleLucky(item: TLocalBookmark) {
     item.relatedSubject = !item.relatedSubject;

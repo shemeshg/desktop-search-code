@@ -39,7 +39,11 @@
           v-bind:value="option.id"
         >{{ option.name }}</option>
       </select>
-      <LocalBookmarkListItems :searchResult="searchLocalResult" />
+      &nbsp; |
+          <b-badge variant="success" v-if="showTags" v-on:click="showTags = !showTags">Hide tags</b-badge>
+      <b-badge variant v-if="!showTags" v-on:click="showTags = !showTags">Show tags</b-badge>
+
+      <LocalBookmarkListItems :searchResult="searchLocalResult" :showTags="showTags" />
       See also: 
         <b-link v-for="str in seeAlso" v-on:click="setSearchInputAndSearch(str)" v-bind:key="str">{{str}}, </b-link>
     </b-card>
@@ -98,6 +102,7 @@ import { TWorkbook } from "../src/dxdb/workbook";
 })
 export default class Home extends Vue {
   @Prop() private msg!: string;
+  showTags = false;
   selectedWorkbookId!: number;
   workbooks!: TWorkbook[];
 

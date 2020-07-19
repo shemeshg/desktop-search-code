@@ -25,8 +25,11 @@
         v-bind:value="option.id"
       >{{ option.name }}</option>
       </select>
-    
-    <LocalBookmarkListItems :searchResult="searchResult"/>
+      &nbsp; |
+          <b-badge variant="success" v-if="showTags" v-on:click="showTags = !showTags">Hide tags</b-badge>
+      <b-badge variant v-if="!showTags" v-on:click="showTags = !showTags">Show tags</b-badge>
+
+    <LocalBookmarkListItems :searchResult="searchResult" :showTags="showTags"/>
     </b-card >
 
   </b-container>
@@ -55,6 +58,7 @@ export default class LocalBookmarkList extends Vue {
   searchText = ""
   searchResult: TLocalBookmark[] = []
   movetoWorkbookId = 1;
+  showTags = false;
 
   mounted(){
     this.$store.state.pageName = "Bookmarks"
