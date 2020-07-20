@@ -10,4 +10,9 @@ module.exports = {
       return args
     })
   },
+  pwa: {
+    name: 'Bookmark Manager',
+    appleMobileWebAppCapable: 'yes',
+  }
+
 }
