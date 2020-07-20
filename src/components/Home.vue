@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row>
-      <b-col>
+      <b-col sm>
         <b-form-input
           type="search"
           placeholder="Tag search like a or (b and c)"
@@ -203,13 +203,18 @@ export default class Home extends Vue {
     }
 
     this.searchResult = [];
-    if (this.isSearchInternet) {
-      const r = await searchEngine.getResult(this.searchText);
-      this.searchTextForResult = this.searchText;
-      this.searchResult = r.data;
-      this.cachedDate = new Date(r.dbRow.dateTime).toString();
-      this.cashedDbRowId = r.dbRow.id ?? -1;
+    try {
+      if (this.isSearchInternet) {
+        const r = await searchEngine.getResult(this.searchText);
+        this.searchTextForResult = this.searchText;
+        this.searchResult = r.data;
+        this.cachedDate = new Date(r.dbRow.dateTime).toString();
+        this.cashedDbRowId = r.dbRow.id ?? -1;
+      }      
+    } catch (error) {
+      console.error(error)
     }
+
 
     this.searchLocalResult = [];
     

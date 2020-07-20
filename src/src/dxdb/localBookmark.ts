@@ -39,7 +39,7 @@ export class LocalBookmark implements TLocalBookmark {
   relatedSubject = true
   sublinks: SubLink[] = []
   isFavorite = 0
-
+  modifiedDateTime = 0;
 
   constructor(t: TLocalBookmark | undefined) {
     if (t !== undefined) {
@@ -54,11 +54,13 @@ export class LocalBookmark implements TLocalBookmark {
       this.relatedSubject = t.relatedSubject
       this.sublinks = t.sublinks
       this.isFavorite = t.isFavorite
+      this.modifiedDateTime = new Date().getTime();
     }
 
   }
 
   save() {
+    this.modifiedDateTime = new Date().getTime();
     return db.localBookmarks.put(this, this.id)
   }
 

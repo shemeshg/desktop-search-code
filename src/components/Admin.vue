@@ -278,8 +278,13 @@ window.open(url, "_blank");
 
       if (extsting.id) {
         newRecord.id = extsting.id;
+        if(newRecord.modifiedDateTime > extsting.modifiedDateTime){
+          await newRecord.save();
+        }        
+      } else {
+        await newRecord.save();
       }
-      await newRecord.save();
+      
     }
   }
 }

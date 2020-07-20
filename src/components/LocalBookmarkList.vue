@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
       <b-row>
-        <b-col>
+        <b-col sm>
           <b-form-input
             type="search"
             placeholder="Full text search, empty = all"
