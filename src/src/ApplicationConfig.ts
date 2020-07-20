@@ -6,6 +6,8 @@ class ApplicationConfig {
 
   defaultWorkbookId = 1;
   defaultExternalSearchId = 1;
+  isHomeSearchLocal = true;
+  isHomeSearchInternet = true;
 
   load() {
     const config = localStorage.getItem(localStorageTar)
@@ -15,6 +17,8 @@ class ApplicationConfig {
       const json = JSON.parse(config)
       this.defaultWorkbookId = json.defaultWorkbookId
       this.defaultExternalSearchId = json.defaultExternalSearchId
+      this.isHomeSearchLocal = json.isHomeSearchLocal;
+      this.isHomeSearchInternet = json.isHomeSearchInternet;
     }
     return this;
   }

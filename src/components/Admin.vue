@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <h2>Chrome extention: drag link to chrome bookmarks bar</h2>
-    <a v-bind:href="addDesktopsearchBookmark">Add DesktopSearch</a>
+    <a v-bind:href="addDesktopsearchBookmark">Add Bookmark</a>
     <h2>Workbooks</h2>
     <b-card class="mb-2">
       <b-link v-on:click="addWorkbook()">Add</b-link>

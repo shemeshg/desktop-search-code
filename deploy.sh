@@ -14,7 +14,7 @@ cd dist
 # if you are deploying to a custom domain
 # echo 'www.example.com' > CNAME
 
-echo "# v0.050 desktop-search  http://shemeshg.github.io/desktop-search" >> README.md
+echo "# v0.070 desktop-search  http://shemeshg.github.io/desktop-search" >> README.md
 
 git init
 git add -A

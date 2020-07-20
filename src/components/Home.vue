@@ -24,7 +24,7 @@
 
     <b-input-group size="sm" prepend="Local" class="mt-2">
       <b-input-group-append is-text>
-        <b-form-checkbox switch class="mr-n2 mb-n1" v-model="isSearchLocal">
+        <b-form-checkbox switch class="mr-n2 mb-n1" v-model="isSearchLocal" @change="isSearchLocalChange($event)">
           <span class="sr-only"></span>
         </b-form-checkbox>
       </b-input-group-append>
@@ -40,17 +40,20 @@
         >{{ option.name }}</option>
       </select>
       &nbsp; |
-          <b-badge variant="success" v-if="showTags" v-on:click="showTags = !showTags">Hide tags</b-badge>
+      <b-badge variant="success" v-if="showTags" v-on:click="showTags = !showTags">Hide tags</b-badge>
       <b-badge variant v-if="!showTags" v-on:click="showTags = !showTags">Show tags</b-badge>
 
-      <LocalBookmarkListItems :searchResult="searchLocalResult" :showTags="showTags" />
-      See also: 
-        <b-link v-for="str in seeAlso" v-on:click="setSearchInputAndSearch(str)" v-bind:key="str">{{str}}, </b-link>
+      <LocalBookmarkListItems :searchResult="searchLocalResult" :showTags="showTags" />See also:
+      <b-link
+        v-for="str in seeAlso"
+        v-on:click="setSearchInputAndSearch(str)"
+        v-bind:key="str"
+      >{{str}},</b-link>
     </b-card>
 
     <b-input-group size="sm" prepend="Internet" class="mt-2">
       <b-input-group-append is-text>
-        <b-form-checkbox switch class="mr-n2 mb-n1" v-model="isSearchInternet">
+        <b-form-checkbox switch class="mr-n2 mb-n1" v-model="isSearchInternet" @change="isSearchInternetChange($event)">
           <span class="sr-only"></span>
         </b-form-checkbox>
       </b-input-group-append>
@@ -89,7 +92,7 @@ import SelectDefaultExternalSearch from "./SelectDefaultExternalSearch.vue";
 import { mapState } from "vuex";
 
 import { TWorkbook } from "../src/dxdb/workbook";
-
+import { applicationConfig } from "../src/ApplicationConfig";
 
 @Component({
   computed: {
@@ -106,8 +109,8 @@ export default class Home extends Vue {
   selectedWorkbookId!: number;
   workbooks!: TWorkbook[];
 
-  isSearchLocal = true;
-  isSearchInternet = true;
+  isSearchLocal = applicationConfig.isHomeSearchLocal;
+  isSearchInternet = applicationConfig.isHomeSearchInternet;
 
   movetoWorkbookId = 1;
 
@@ -116,12 +119,24 @@ export default class Home extends Vue {
   cashedDbRowId = -1;
   searchTextForResult = "";
   seeAlso: string[] = [];
-  
+
   searchResult: GenericSearchResult[] = [];
   searchLocalResult: GenericSearchResult[] = [];
 
+
+
   mounted() {
     this.$store.state.pageName = "Home";
+  }
+
+  isSearchLocalChange(val: boolean){
+    applicationConfig.isHomeSearchLocal = val;
+    applicationConfig.save();
+  }
+
+  isSearchInternetChange(val: boolean){
+    applicationConfig.isHomeSearchInternet = val;
+    applicationConfig.save();
   }
 
   async doMoveResultToWorkbook() {
@@ -149,9 +164,9 @@ export default class Home extends Vue {
     this.doSearch();
   }
 
-  setSearchInputAndSearch(str: string){
+  setSearchInputAndSearch(str: string) {
     this.searchText = str;
-    return this.doSearch()
+    return this.doSearch();
   }
 
   doExternal() {
@@ -198,7 +213,7 @@ export default class Home extends Vue {
   }
 
   async doSearch() {
-    const searchText = this.searchText.toLowerCase().trim()
+    const searchText = this.searchText.toLowerCase().trim();
     if (!searchText) {
       return;
     }
@@ -211,17 +226,16 @@ export default class Home extends Vue {
         this.searchResult = r.data;
         this.cachedDate = new Date(r.dbRow.dateTime).toString();
         this.cashedDbRowId = r.dbRow.id ?? -1;
-      }      
+      }
     } catch (error) {
       // eslint-disable-next-line
-      console.error(error)
+      console.error(error);
     }
 
-
     this.searchLocalResult = [];
-    
+
     if (this.isSearchLocal) {
-      const searchExp = searchText + ' or "' + searchText + '"'
+      const searchExp = searchText + ' or "' + searchText + '"';
       this.searchLocalResult = await LocalBookmark.tagSearch(
         searchExp,
         this.selectedWorkbookId
@@ -231,8 +245,8 @@ export default class Home extends Vue {
         searchText,
         this.selectedWorkbookId
       );
-      
-      this.seeAlso = seeAlso.splice(0,10)
+
+      this.seeAlso = seeAlso.splice(0, 10);
     }
   }
 
