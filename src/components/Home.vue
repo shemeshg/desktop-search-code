@@ -212,6 +212,7 @@ export default class Home extends Vue {
         this.cashedDbRowId = r.dbRow.id ?? -1;
       }      
     } catch (error) {
+      // eslint-disable-next-line
       console.error(error)
     }
 
