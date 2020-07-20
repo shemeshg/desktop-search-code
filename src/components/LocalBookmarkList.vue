@@ -75,7 +75,7 @@ export default class LocalBookmarkList extends Vue {
 
 
   async doSearch(onlyFavorites: boolean){
-    this.searchResult = await LocalBookmark.fullTextSearch(this.searchText, onlyFavorites, this.selectedWorkbookId)    
+    this.searchResult = await LocalBookmark.fullTextSearch(this.searchText.toLowerCase(), onlyFavorites, this.selectedWorkbookId)    
   }
 
   get dirStyle() {

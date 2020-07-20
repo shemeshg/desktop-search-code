@@ -198,15 +198,16 @@ export default class Home extends Vue {
   }
 
   async doSearch() {
-    if (!this.searchText) {
+    const searchText = this.searchText.toLowerCase().trim()
+    if (!searchText) {
       return;
     }
 
     this.searchResult = [];
     try {
       if (this.isSearchInternet) {
-        const r = await searchEngine.getResult(this.searchText);
-        this.searchTextForResult = this.searchText;
+        const r = await searchEngine.getResult(searchText);
+        this.searchTextForResult = searchText;
         this.searchResult = r.data;
         this.cachedDate = new Date(r.dbRow.dateTime).toString();
         this.cashedDbRowId = r.dbRow.id ?? -1;
@@ -220,14 +221,14 @@ export default class Home extends Vue {
     this.searchLocalResult = [];
     
     if (this.isSearchLocal) {
-      const searchExp = this.searchText + ' or "' + this.searchText + '"'
+      const searchExp = searchText + ' or "' + searchText + '"'
       this.searchLocalResult = await LocalBookmark.tagSearch(
         searchExp,
         this.selectedWorkbookId
       );
 
       const seeAlso = await LocalBookmark.relatedTags(
-        this.searchText ,
+        searchText,
         this.selectedWorkbookId
       );
       
