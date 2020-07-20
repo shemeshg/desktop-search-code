@@ -1,6 +1,9 @@
 {
   "name": "desktop-search",
-  "version": "0.1.0",
+  "productName": "Bookmark manager",
+  "author": "iuqwer9 <iuqwer9@sourceforge.net> (https://sourceforge.net/u/iuqwer9/profile/)",
+  "description": "Bookmark manager",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
