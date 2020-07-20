@@ -1,8 +1,8 @@
 {
   "name": "desktop-search",
-  "productName": "Bookmark manager",
+  "productName": "Bookmark Manager",
   "author": "iuqwer9 <iuqwer9@sourceforge.net> (https://sourceforge.net/u/iuqwer9/profile/)",
-  "description": "Bookmark manager",
+  "description": "Bookmark Manager",
   "version": "0.4.0",
   "private": true,
   "scripts": {
