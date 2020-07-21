@@ -201,26 +201,21 @@ export default class Home extends Vue {
     if (!this.searchText) {
       return;
     }
-    const searchLocalResult = await LocalBookmark.tagSearch(
-      this.searchText,
-      this.selectedWorkbookId
-    );
-    if (searchLocalResult.length > 0 && !searchLocalResult[0].relatedSubject) {
-      const url = searchLocalResult[0].url;
+   await this.doSearch()
+    if (this.searchLocalResult.length > 0 && !this.searchLocalResult[0].relatedSubject) {
+      const url = this.searchLocalResult[0].url;
       this.doClear();
       window.location.href = url;
       return;
     }
-    this.searchLocalResult = searchLocalResult;
+    
+    if (this.searchResult.length > 0 && !this.searchResult[0].relatedSubject) {
+      const url = this.searchResult[0].url;
+      this.doClear();
+      window.location.href = url;
+      return;
+    }
 
-    const searchResult = await searchEngine.getResult(this.searchText);
-    if (searchResult.data.length > 0 && !searchResult.data[0].relatedSubject) {
-      const url = searchResult.data[0].url;
-      this.doClear();
-      window.location.href = url;
-      return;
-    }
-    this.searchResult = searchResult.data;
   }
 
   async addBookmarkFromItem(item: GenericSearchResult) {
