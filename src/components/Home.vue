@@ -1,10 +1,18 @@
 <template>
   <b-container fluid>
+      <b-form-radio-group  v-model.number="searchType" name="searchtype" size="sm"
+      @change="searchTypeChange($event)"
+      >
+        <b-form-radio value="0" >Tags</b-form-radio>
+        <b-form-radio value="1" >Fulltext</b-form-radio>
+         <b-badge variant="success" v-if="isFavoritesOnly" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
+         <b-badge variant v-if="!isFavoritesOnly" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
+      </b-form-radio-group>
     <b-row>
       <b-col sm>
         <b-form-input
           type="search"
-          placeholder="Tag search like a or (b and c)"
+          :placeholder="getSearchPlaceholder"
           v-model="searchText"
           v-bind:style="{ direction: dirStyle}"
           v-on:keyup.enter="doSearch"
@@ -92,7 +100,7 @@ import SelectDefaultExternalSearch from "./SelectDefaultExternalSearch.vue";
 import { mapState } from "vuex";
 
 import { TWorkbook } from "../src/dxdb/workbook";
-import { applicationConfig } from "../src/ApplicationConfig";
+import { applicationConfig, SearchTypes } from "../src/ApplicationConfig";
 
 @Component({
   computed: {
@@ -111,6 +119,8 @@ export default class Home extends Vue {
 
   isSearchLocal = applicationConfig.isHomeSearchLocal;
   isSearchInternet = applicationConfig.isHomeSearchInternet;
+  searchType = 0
+  isFavoritesOnly = false;
 
   movetoWorkbookId = 1;
 
@@ -123,10 +133,19 @@ export default class Home extends Vue {
   searchResult: GenericSearchResult[] = [];
   searchLocalResult: GenericSearchResult[] = [];
 
-
+  created(){
+    this.searchType = applicationConfig.searchType;
+  }
 
   mounted() {
     this.$store.state.pageName = "Home";
+  }
+
+  get getSearchPlaceholder() {
+    if (this.searchType === SearchTypes.TAGS) {
+      return "Tag search like a or (b and c)"
+    } 
+      return "Full text search, empty = all";    
   }
 
   isSearchLocalChange(val: boolean){
@@ -136,6 +155,11 @@ export default class Home extends Vue {
 
   isSearchInternetChange(val: boolean){
     applicationConfig.isHomeSearchInternet = val;
+    applicationConfig.save();
+  }
+
+  searchTypeChange(val: number){   
+    applicationConfig.searchType = Number(val);
     applicationConfig.save();
   }
 
@@ -214,9 +238,15 @@ export default class Home extends Vue {
 
   async doSearch() {
     const searchText = this.searchText.toLowerCase().trim();
+    
     if (!searchText) {
+      if (this.searchType === SearchTypes.FULLTEXT) {
+        this.doClear();
+        await this.searchLocalFulltext(this.isFavoritesOnly)
+      }
       return;
     }
+    
 
     this.searchResult = [];
     try {
@@ -235,6 +265,19 @@ export default class Home extends Vue {
     this.searchLocalResult = [];
 
     if (this.isSearchLocal) {
+      if (this.searchType === SearchTypes.TAGS) {
+        await this.searchLocalTags(searchText)
+      } else {
+        await this.searchLocalFulltext(this.isFavoritesOnly)
+      }
+    }
+  }
+
+  private async searchLocalFulltext(onlyFavorites: boolean){
+    this.searchLocalResult = await LocalBookmark.fullTextSearch(this.searchText.toLowerCase(), onlyFavorites, this.selectedWorkbookId)    
+  }
+
+  private async searchLocalTags(searchText: string){
       const searchExp = searchText + ' or "' + searchText + '"';
       this.searchLocalResult = await LocalBookmark.tagSearch(
         searchExp,
@@ -246,8 +289,7 @@ export default class Home extends Vue {
         this.selectedWorkbookId
       );
 
-      this.seeAlso = seeAlso.splice(0, 20);
-    }
+      this.seeAlso = seeAlso;
   }
 
   get dirStyle() {

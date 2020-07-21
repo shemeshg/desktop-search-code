@@ -1,6 +1,11 @@
 import { Workbook } from "./dxdb/workbook"
 import { ExternalSearch } from './dxdb/externalSearch';
 
+export enum SearchTypes {
+  TAGS = 0,
+  FULLTEXT = 1,
+}
+
 const localStorageTar = "config"
 class ApplicationConfig {
 
@@ -8,6 +13,7 @@ class ApplicationConfig {
   defaultExternalSearchId = 1;
   isHomeSearchLocal = true;
   isHomeSearchInternet = true;
+  searchType: SearchTypes = SearchTypes.TAGS
 
   load() {
     const config = localStorage.getItem(localStorageTar)
@@ -19,6 +25,7 @@ class ApplicationConfig {
       this.defaultExternalSearchId = json.defaultExternalSearchId
       this.isHomeSearchLocal = json.isHomeSearchLocal;
       this.isHomeSearchInternet = json.isHomeSearchInternet;
+      this.searchType = json.searchType;
     }
     return this;
   }

@@ -1,16 +1,12 @@
 <template>
   <div>
     <b-container fluid>
-      <h1>Bookmark Manager v0.8.0</h1>
-      <p>search duckduckgo api</p>
-      <p>redirect search of duckduckgo, google or any other search engine.</p>
-      <h2>Home</h2>
-      <p>Exact tag search, duckduckgo api and local bookmarks</p>
-      <h2>Bookmarks</h2>
-      <p>Full text search local bookmarks</p>
+      <h1>Bookmark Manager v0.9.0</h1>
+      <p>Search duckduckgo api</p>
+      <p>Redirect search of duckduckgo, google or any other search engine.</p>  
       <h2>Admin</h2>
-      <p>Chrome extention (drag to your chrome bookmark bar)</p>
-      <p>Application Configuration.</p>
+      <li>Chrome extention (drag to your chrome bookmark bar)</li>
+      <li>Application Configuration.</li>
       <h2>Built With</h2>
       <p>Vue</p>
       <p>Icon made by Pixel perfect from www.flaticon.com</p>    

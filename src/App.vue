@@ -6,7 +6,6 @@
           <b-col >
             <h5>
             <router-link to="/" ref="home">Home</router-link>|
-            <router-link to="/localBookmarkList" ref="localBookmarkList">Bookmarks</router-link>|
             <router-link to="/admin" ref="admin">Admin</router-link>|
             <router-link to="/about" ref="about">About</router-link>  
                 </h5>   
