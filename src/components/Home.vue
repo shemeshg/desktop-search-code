@@ -16,6 +16,8 @@
           v-model="searchText"
           v-bind:style="{ direction: dirStyle}"
           v-on:keyup.enter="doSearch"
+          autofocus
+          ref="searchText"
         ></b-form-input>
       </b-col>
       <b-col>
@@ -232,6 +234,7 @@ export default class Home extends Vue {
   }
 
   async doSearch() {
+    this.focusSearchText();
     const searchText = this.searchText.toLowerCase().trim();
     
     if (!searchText) {
@@ -266,6 +269,16 @@ export default class Home extends Vue {
         await this.searchLocalFulltext(this.isFavoritesOnly)
       }
     }
+
+    
+
+  }
+
+  focusSearchText() {
+    // eslint-disable-next-line
+    const el: any = this.$refs.searchText
+    el.$el.focus()
+    
   }
 
   private async searchLocalFulltext(onlyFavorites: boolean){
