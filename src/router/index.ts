@@ -16,12 +16,6 @@ Vue.use(VueRouter)
     component: () => import('../views/About.vue')
   },
   {
-    path: '/localBookmarkList',
-    name: "localBookmarkList",
-    props: true ,
-    component: () => import('../views/LocalBookmarkList.vue')
-  },
-  {
     path: '/localBookmark/:id',
     name: "localBookmark",
     props: true ,
