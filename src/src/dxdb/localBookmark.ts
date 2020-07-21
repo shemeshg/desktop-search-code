@@ -107,29 +107,18 @@ export class LocalBookmark implements TLocalBookmark {
       .toArray(a => a.sort(sortOrderFunc))
   }
 
-  static relatedTags(expr: string, workbookId: number) {
-    const re = new RegExp(expr, "g");
-   
+   static async relatedTags(expr: string, workbookId: number) {
 
-    return db.localBookmarks.where({workbookId: workbookId}).filter((row) => {
-      let s = row.header + row.tags + row.url;
-      row.sublinks.forEach((currentval) => {
-        s = s + currentval.header + currentval.text + currentval.url
-      })
-
-      return re.test(s)
-    }).toArray(a => a.sort(sortOrderFunc)).then((rows)=>{      
       const ret: Record<string, number> = {}
-      
+      const rows = await this.fullTextSearch(expr, false, workbookId);
+
       for (let i=0;i< rows.length; i++){
         rows[i].tags.forEach( (tag: string)=>{
           ret[tag] = 0
         })
       }
-
-      return Object.keys(ret)
-    })
-
+  
+      return Object.keys(ret)      
   }
 
   static fullTextSearch(expr: string, onlyFavorites: boolean, workbookId: number) {

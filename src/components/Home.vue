@@ -246,7 +246,7 @@ export default class Home extends Vue {
         this.selectedWorkbookId
       );
 
-      this.seeAlso = seeAlso.splice(0, 10);
+      this.seeAlso = seeAlso.splice(0, 20);
     }
   }
 
