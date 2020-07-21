@@ -5,8 +5,8 @@
       >
         <b-form-radio value="0" >Tags</b-form-radio>
         <b-form-radio value="1" >Fulltext</b-form-radio>
-         <b-badge variant="success" v-if="isFavoritesOnly" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
-         <b-badge variant v-if="!isFavoritesOnly" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
+         <b-badge variant="success" v-if="isFavoritesOnly && searchType===1" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
+         <b-badge variant v-if="!isFavoritesOnly && searchType===1" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
       </b-form-radio-group>
     <b-row>
       <b-col sm>

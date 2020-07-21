@@ -33,4 +33,7 @@ export default {
 };
 </script>
 <style lang="scss">
+  .badge {
+    cursor: default;
+  }
 </style>
