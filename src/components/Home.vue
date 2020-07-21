@@ -16,6 +16,7 @@
           v-model="searchText"
           v-bind:style="{ direction: dirStyle}"
           v-on:keyup.enter="doSearch"
+          v-on:keyup.tab="doRedirect"
           autofocus
           ref="searchText"
         ></b-form-input>
