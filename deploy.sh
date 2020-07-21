@@ -25,12 +25,11 @@ git commit -m 'deploy'
 
 git remote add origin https://github.com/shemeshg/desktop-search.git 
 git push -u origin master --force
-cd /tmp
 
-git clone  https://github.com/shemeshg/desktop-search.git
-cd desktop-search/
 git branch gh-pages
 git push -u origin gh-pages --force
+
+
 http://shemeshg.github.io/desktop-search
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
