@@ -284,7 +284,7 @@ export default class Home extends Vue {
         this.selectedWorkbookId
       );
 
-      this.seeAlso = seeAlso;
+      this.seeAlso = seeAlso.splice(0, 20);
   }
 
   get dirStyle() {
