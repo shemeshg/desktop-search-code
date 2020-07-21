@@ -176,7 +176,7 @@ export default class Home extends Vue {
     if (this.searchType === SearchTypes.TAGS) {
       return "Tag search like a or (b and c)";
     }
-    return "Full text search, empty = all";
+    return "Fulltext JS Regexp, empty = all";
   }
 
   isSearchLocalChange(val: boolean) {

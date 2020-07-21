@@ -132,7 +132,7 @@ export class LocalBookmark implements TLocalBookmark {
       row.sublinks.forEach((currentval) => {
         s = s + currentval.header + currentval.text + currentval.url
       })
-      return re.test(s)
+      return re.test(s.toLowerCase())
     }).toArray(a => a.sort(sortOrderFunc))
 
   }
