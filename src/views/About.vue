@@ -6,7 +6,7 @@
       <p>Redirect search of duckduckgo, google or any other search engine.</p>  
       <pre>
         Enter - shortcut for search click
-        Tab - shortcut for feel lucky click
+        Ctrl.Enter - shortcut for feel lucky click
       </pre>
       <h2>Admin</h2>
       <li>Chrome extention (drag to your chrome bookmark bar)</li>
