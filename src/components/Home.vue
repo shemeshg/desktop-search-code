@@ -21,14 +21,22 @@
           ref="searchText"
         ></b-form-input>
       </b-col>
-      <b-col>
+      <b-col lg>
         <div class="input-group mb-2">
-          <b-button class="mr-1" v-on:click="doSearch">Search</b-button>
-          <b-button class="mr-1" v-on:click="doRedirect">Feel lucky</b-button>
+          <b-button class="mr-1" v-on:click="doSearch" >
+            <b-icon-search></b-icon-search>
+          </b-button>
+          <b-button class="mr-1" v-on:click="doRedirect" size="sm" >
+              <b-icon-search></b-icon-search>
+              <b-icon-box-arrow-in-up-right></b-icon-box-arrow-in-up-right>
+          </b-button>
           <div class="input-group-prepend">
-            <b-button class="mr-0" v-on:click="doExternal">External</b-button>
+            <b-button class="mr-0" v-on:click="doExternal" >              
+              <b-icon-box-arrow-in-up-right></b-icon-box-arrow-in-up-right>
+            </b-button>
+            <SelectDefaultExternalSearch  class="custom-select" style="width: 170px;"/>
           </div>
-          <SelectDefaultExternalSearch />
+          
         </div>
       </b-col>
     </b-row>
