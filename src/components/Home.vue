@@ -1,13 +1,24 @@
 <template>
   <b-container fluid>
-      <b-form-radio-group  v-model.number="searchType" name="searchtype" size="sm"
+    <b-form-radio-group
+      v-model.number="searchType"
+      name="searchtype"
+      size="sm"
       @change="searchTypeChange($event)"
-      >
-        <b-form-radio value="0" >Tags</b-form-radio>
-        <b-form-radio value="1" >Fulltext</b-form-radio>
-         <b-badge variant="success" v-if="isFavoritesOnly && searchType===1" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
-         <b-badge variant v-if="!isFavoritesOnly && searchType===1" v-on:click="isFavoritesOnly = !isFavoritesOnly">Favorites only</b-badge>
-      </b-form-radio-group>
+    >
+      <b-form-radio value="0">Tags</b-form-radio>
+      <b-form-radio value="1">Fulltext</b-form-radio>
+      <b-badge
+        variant="success"
+        v-if="isFavoritesOnly && searchType===1"
+        v-on:click="isFavoritesOnly = !isFavoritesOnly"
+      >Favorites only</b-badge>
+      <b-badge
+        variant
+        v-if="!isFavoritesOnly && searchType===1"
+        v-on:click="isFavoritesOnly = !isFavoritesOnly"
+      >Favorites only</b-badge>
+    </b-form-radio-group>
     <b-row>
       <b-col sm>
         <b-form-input
@@ -23,27 +34,31 @@
       </b-col>
       <b-col lg>
         <div class="input-group mb-2">
-          <b-button class="mr-1" v-on:click="doSearch" >
+          <b-button class="mr-1" v-on:click="doSearch">
             <b-icon-search></b-icon-search>
           </b-button>
-          <b-button class="mr-1" v-on:click="doRedirect" size="sm" >
-              <b-icon-search></b-icon-search>
-              <b-icon-box-arrow-in-up-right></b-icon-box-arrow-in-up-right>
+          <b-button class="mr-1" v-on:click="doRedirect" size="sm">
+            <b-icon-search></b-icon-search>
+            <b-icon-box-arrow-in-up-right></b-icon-box-arrow-in-up-right>
           </b-button>
           <div class="input-group-prepend">
-            <b-button class="mr-0" v-on:click="doExternal" >              
+            <b-button class="mr-0" v-on:click="doExternal">
               <b-icon-box-arrow-in-up-right></b-icon-box-arrow-in-up-right>
             </b-button>
-            <SelectDefaultExternalSearch  class="custom-select" style="width: 170px;"/>
+            <SelectDefaultExternalSearch class="custom-select" style="width: 170px;" />
           </div>
-          
         </div>
       </b-col>
     </b-row>
 
     <b-input-group size="sm" prepend="Local" class="mt-2">
       <b-input-group-append is-text>
-        <b-form-checkbox switch class="mr-n2 mb-n1" v-model="isSearchLocal" @change="isSearchLocalChange($event)">
+        <b-form-checkbox
+          switch
+          class="mr-n2 mb-n1"
+          v-model="isSearchLocal"
+          @change="isSearchLocalChange($event)"
+        >
           <span class="sr-only"></span>
         </b-form-checkbox>
       </b-input-group-append>
@@ -72,7 +87,12 @@
 
     <b-input-group size="sm" prepend="Internet" class="mt-2">
       <b-input-group-append is-text>
-        <b-form-checkbox switch class="mr-n2 mb-n1" v-model="isSearchInternet" @change="isSearchInternetChange($event)">
+        <b-form-checkbox
+          switch
+          class="mr-n2 mb-n1"
+          v-model="isSearchInternet"
+          @change="isSearchInternetChange($event)"
+        >
           <span class="sr-only"></span>
         </b-form-checkbox>
       </b-input-group-append>
@@ -130,7 +150,7 @@ export default class Home extends Vue {
 
   isSearchLocal = applicationConfig.isHomeSearchLocal;
   isSearchInternet = applicationConfig.isHomeSearchInternet;
-  searchType = 0
+  searchType = 0;
   isFavoritesOnly = false;
 
   movetoWorkbookId = 1;
@@ -144,7 +164,7 @@ export default class Home extends Vue {
   searchResult: GenericSearchResult[] = [];
   searchLocalResult: GenericSearchResult[] = [];
 
-  created(){
+  created() {
     this.searchType = applicationConfig.searchType;
   }
 
@@ -154,22 +174,22 @@ export default class Home extends Vue {
 
   get getSearchPlaceholder() {
     if (this.searchType === SearchTypes.TAGS) {
-      return "Tag search like a or (b and c)"
-    } 
-      return "Full text search, empty = all";    
+      return "Tag search like a or (b and c)";
+    }
+    return "Full text search, empty = all";
   }
 
-  isSearchLocalChange(val: boolean){
+  isSearchLocalChange(val: boolean) {
     applicationConfig.isHomeSearchLocal = val;
     applicationConfig.save();
   }
 
-  isSearchInternetChange(val: boolean){
+  isSearchInternetChange(val: boolean) {
     applicationConfig.isHomeSearchInternet = val;
     applicationConfig.save();
   }
 
-  searchTypeChange(val: number){   
+  searchTypeChange(val: number) {
     applicationConfig.searchType = Number(val);
     applicationConfig.save();
   }
@@ -212,21 +232,23 @@ export default class Home extends Vue {
     if (!this.searchText) {
       return;
     }
-   await this.doSearch()
-    if (this.searchLocalResult.length > 0 && !this.searchLocalResult[0].relatedSubject) {
+    await this.doSearch();
+    if (
+      this.searchLocalResult.length > 0 &&
+      !this.searchLocalResult[0].relatedSubject
+    ) {
       const url = this.searchLocalResult[0].url;
       this.doClear();
       window.location.href = url;
       return;
     }
-    
+
     if (this.searchResult.length > 0 && !this.searchResult[0].relatedSubject) {
       const url = this.searchResult[0].url;
       this.doClear();
       window.location.href = url;
       return;
     }
-
   }
 
   async addBookmarkFromItem(item: GenericSearchResult) {
@@ -245,15 +267,14 @@ export default class Home extends Vue {
   async doSearch() {
     this.focusSearchText();
     const searchText = this.searchText.toLowerCase().trim();
-    
+
     if (!searchText) {
       if (this.searchType === SearchTypes.FULLTEXT) {
         this.doClear();
-        await this.searchLocalFulltext(this.isFavoritesOnly)
+        await this.searchLocalFulltext(this.isFavoritesOnly, searchText);
       }
       return;
     }
-    
 
     this.searchResult = [];
     try {
@@ -273,40 +294,54 @@ export default class Home extends Vue {
 
     if (this.isSearchLocal) {
       if (this.searchType === SearchTypes.TAGS) {
-        await this.searchLocalTags(searchText)
+        await this.searchLocalTags(searchText);
       } else {
-        await this.searchLocalFulltext(this.isFavoritesOnly)
+        await this.searchLocalFulltext(this.isFavoritesOnly, searchText);
       }
     }
-
-    
-
   }
 
   focusSearchText() {
     // eslint-disable-next-line
-    const el: any = this.$refs.searchText
-    el.$el.focus()
-    
+    const el: any = this.$refs.searchText;
+    el.$el.focus();
   }
 
-  private async searchLocalFulltext(onlyFavorites: boolean){
-    this.searchLocalResult = await LocalBookmark.fullTextSearch(this.searchText.toLowerCase(), onlyFavorites, this.selectedWorkbookId)    
-  }
+  private async searchLocalFulltext(
+    onlyFavorites: boolean,
+    searchText: string
+  ) {
+    this.searchLocalResult = await LocalBookmark.fullTextSearch(
+      searchText,
+      onlyFavorites,
+      this.selectedWorkbookId
+    );
 
-  private async searchLocalTags(searchText: string){
-      const searchExp = searchText + ' or "' + searchText + '"';
-      this.searchLocalResult = await LocalBookmark.tagSearch(
-        searchExp,
-        this.selectedWorkbookId
-      );
+    this.seeAlso = [];
 
+    if (searchText) {
       const seeAlso = await LocalBookmark.relatedTags(
         searchText,
         this.selectedWorkbookId
       );
 
       this.seeAlso = seeAlso.splice(0, 20);
+    }
+  }
+
+  private async searchLocalTags(searchText: string) {
+    const searchExp = searchText + ' or "' + searchText + '"';
+    this.searchLocalResult = await LocalBookmark.tagSearch(
+      searchExp,
+      this.selectedWorkbookId
+    );
+
+    const seeAlso = await LocalBookmark.relatedTags(
+      searchText,
+      this.selectedWorkbookId
+    );
+
+    this.seeAlso = seeAlso.splice(0, 20);
   }
 
   get dirStyle() {
