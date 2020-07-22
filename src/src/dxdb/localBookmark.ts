@@ -122,7 +122,7 @@ export class LocalBookmark implements TLocalBookmark {
   }
 
   static fullTextSearch(expr: string, onlyFavorites: boolean, workbookId: number) {
-    const re = new RegExp(expr, "g");
+    
     const searchFilter: {workbookId: number;  isFavorite?: number} = {workbookId: workbookId}
     if (onlyFavorites){
       searchFilter.isFavorite = 1
@@ -132,6 +132,7 @@ export class LocalBookmark implements TLocalBookmark {
       row.sublinks.forEach((currentval) => {
         s = s + currentval.header + currentval.text + currentval.url
       })
+      const re = new RegExp(expr, "g");
       return re.test(s.toLowerCase())
     }).toArray(a => a.sort(sortOrderFunc))
 

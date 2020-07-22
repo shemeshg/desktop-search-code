@@ -163,7 +163,7 @@ export default class Home extends Vue {
   searchLocalResult: GenericSearchResult[] = [];
   
   destroyed(){
-    window.removeEventListener('keypress', this.doTest);
+    window.removeEventListener('keypress', this.doKeypressParse);
   }
 
   created() {
@@ -172,11 +172,11 @@ export default class Home extends Vue {
 
   mounted() {
     this.$store.state.pageName = "Home";
-    window.removeEventListener('keypress', this.doTest);
-    window.addEventListener('keypress', this.doTest)
+    window.removeEventListener('keypress', this.doKeypressParse);
+    window.addEventListener('keypress', this.doKeypressParse)
   }
 
-  doTest(e: KeyboardEvent){
+  doKeypressParse(e: KeyboardEvent){
     if (e.ctrlKey === true && e.code === "Enter"){
       this.doRedirect()
     } else if (e.altKey === true && e.code === "Enter"){
@@ -250,6 +250,7 @@ export default class Home extends Vue {
     await this.doSearch();
     if (
       this.searchLocalResult.length > 0 &&
+      this.searchLocalResult.filter( (row)=>{return !row.relatedSubject}).length === 1 &&
       !this.searchLocalResult[0].relatedSubject
     ) {
       const url = this.searchLocalResult[0].url;
