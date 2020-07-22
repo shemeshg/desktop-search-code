@@ -93,9 +93,9 @@ export default class LocalBookmark extends Vue {
 
   doAddSublink() {
     const s = new SubLink();
-    s.header = "shalom olam";
-    s.url = "http://google.com";
-    s.text = "Do the shalom olam";
+    s.header = "";
+    s.url = "";
+    s.text = "";
     this.sublinks.push(s);
   }
 
