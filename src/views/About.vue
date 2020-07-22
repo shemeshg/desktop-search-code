@@ -7,6 +7,13 @@
       <pre>
         Enter - shortcut for search click
         Ctrl.Enter - shortcut for feel lucky click
+        Alt.Enter - external
+
+        Tag search - Use expretion like
+          A and (b or c)
+        Fulltext - use javascript regexp like
+          (a | b)
+          hello w.*rd
       </pre>
       <h2>Admin</h2>
       <li>Chrome extention (drag to your chrome bookmark bar)</li>

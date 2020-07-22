@@ -26,8 +26,6 @@
           :placeholder="getSearchPlaceholder"
           v-model="searchText"
           v-bind:style="{ direction: dirStyle}"
-          v-on:keyup.enter="doSearch"
-          v-on:keyup.ctrl.enter="doRedirect"
           autofocus
           ref="searchText"
         ></b-form-input>
@@ -163,6 +161,10 @@ export default class Home extends Vue {
 
   searchResult: GenericSearchResult[] = [];
   searchLocalResult: GenericSearchResult[] = [];
+  
+  destroyed(){
+    window.removeEventListener('keypress', this.doTest);
+  }
 
   created() {
     this.searchType = applicationConfig.searchType;
@@ -170,6 +172,19 @@ export default class Home extends Vue {
 
   mounted() {
     this.$store.state.pageName = "Home";
+    window.removeEventListener('keypress', this.doTest);
+    window.addEventListener('keypress', this.doTest)
+  }
+
+  doTest(e: KeyboardEvent){
+    if (e.ctrlKey === true && e.code === "Enter"){
+      this.doRedirect()
+    } else if (e.altKey === true && e.code === "Enter"){
+      this.doExternal()
+    } else if ( e.code === "Enter"){
+          this.doSearch()
+    }
+    
   }
 
   get getSearchPlaceholder() {
