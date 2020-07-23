@@ -16,6 +16,7 @@ export interface TLocalBookmark {
   relatedSubject: boolean;
   sublinks: SubLink[];
   isFavorite: number;
+  isDeleted: number;
 }
 
 function sortOrderFunc(firstEl: TLocalBookmark, secondEl: TLocalBookmark) {
@@ -40,6 +41,7 @@ export class LocalBookmark implements TLocalBookmark {
   sublinks: SubLink[] = []
   isFavorite = 0
   modifiedDateTime = 0;
+  isDeleted = 0
 
   constructor(t: TLocalBookmark | undefined) {
     if (t !== undefined) {
@@ -55,6 +57,7 @@ export class LocalBookmark implements TLocalBookmark {
       this.sublinks = t.sublinks
       this.isFavorite = t.isFavorite
       this.modifiedDateTime = new Date().getTime();
+      this.isDeleted = t.isDeleted
     }
 
   }
@@ -72,8 +75,17 @@ export class LocalBookmark implements TLocalBookmark {
     return db.localBookmarks.where({workbookId: workbookId}).delete();
   }
 
-  static deleteById(id: number) {
-    return db.localBookmarks.delete(id)
+  static purgeByWorkbookId(workbookId: number){
+    return db.localBookmarks.where({workbookId: workbookId, isDeleted: 1}).delete();
+  }
+
+  static async deleteById(id: number) {
+    const r = await db.localBookmarks.get(id);
+    if (r === undefined){return;}
+    r.isDeleted = 1;
+    await (new LocalBookmark(r)).save()
+
+    //return db.localBookmarks.delete(id)
   }
 
   static getById(id: number) {
@@ -93,7 +105,8 @@ export class LocalBookmark implements TLocalBookmark {
       uuid: uuid(), sortOrderId: 0,
       workbookId: workbookId, tags: [firstSearchTag], url: item.url,
       header: item.header, text: item.text, relatedSubject: item.relatedSubject, sublinks: item.sublinks,
-      isFavorite: 0
+      isFavorite: 0,
+      isDeleted: 0,
     })
   }
 
@@ -101,7 +114,7 @@ export class LocalBookmark implements TLocalBookmark {
     const se = new SearchExpr(expr.toLowerCase())
     se.parseStr()
 
-    return db.localBookmarks.where({ workbookId: workbookId }).filter((row) => {
+    return db.localBookmarks.where({ workbookId: workbookId, isDeleted: 0 }).filter((row) => {
       return se.evaluateExp(row.tags)
     })
       .toArray(a => a.sort(sortOrderFunc))
@@ -123,7 +136,7 @@ export class LocalBookmark implements TLocalBookmark {
 
   static fullTextSearch(expr: string, onlyFavorites: boolean, workbookId: number) {
     
-    const searchFilter: {workbookId: number;  isFavorite?: number} = {workbookId: workbookId}
+    const searchFilter: {workbookId: number; isDeleted: number; isFavorite?: number} = {workbookId: workbookId, isDeleted: 0}
     if (onlyFavorites){
       searchFilter.isFavorite = 1
     }

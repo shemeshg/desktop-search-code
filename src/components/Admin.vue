@@ -10,7 +10,8 @@
           <b-form-input :value="workbook.name" @change="emitWorkbookName(workbook, $event)"></b-form-input>
 
           <span v-if="workbooks.length !== 1">
-            <b-link v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>
+            <b-link v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>&nbsp;|
+            <b-link v-on:click="purgeWorkbook(workbook)">Purge</b-link>
           </span>
         </li>
       </ul>
@@ -37,7 +38,7 @@
             </b-form-group>
           </b-form-row>
           <span v-if="idx !== 0">
-            <b-link v-on:click="deleteExternalSearch(externalSearch, idx)">Del</b-link> &nbsp;|
+            <b-link v-on:click="deleteExternalSearch(externalSearch, idx)">Del</b-link>&nbsp;|
           </span>
           <b-link v-on:click="addExternalSearchParam(externalSearch)">Add param</b-link>
           <b-card
@@ -97,11 +98,9 @@ import { LocalBookmark, TLocalBookmark } from "../src/dxdb/localBookmark";
 import {
   TExternalSearch,
   ExternalSearch,
-  ExternalSearchParam
+  ExternalSearchParam,
 } from "../src/dxdb/externalSearch";
 import * as Util from "../src/util";
-
-
 
 @Component({
   computed: {
@@ -109,10 +108,10 @@ import * as Util from "../src/util";
       "selectedWorkbookId",
       "workbooks",
       "selectedExternalSearchId",
-      "externalSearchs"
-    ])
+      "externalSearchs",
+    ]),
   },
-  components: {}
+  components: {},
 })
 export default class Admin extends Vue {
   selectedWorkbookId!: number;
@@ -142,7 +141,6 @@ window.open(url, "_blank");
     this.$store.state.pageName = "Admin";
   }
 
-
   async addExternalSearchParam(externalSearch: TExternalSearch) {
     const w = new ExternalSearchParam();
     w.paramName = "q";
@@ -170,6 +168,11 @@ window.open(url, "_blank");
     this.workbooks.splice(idx, 1);
     this.selectedWorkbookId = Number(this.workbooks[0].id);
   }
+
+  async purgeWorkbook(workbook: TWorkbook){
+    await LocalBookmark.purgeByWorkbookId(Number(workbook.id));
+  }
+
 
   async deleteExternalSearch(externalSearch: TExternalSearch, idx: number) {
     const w = new ExternalSearch(externalSearch);
@@ -281,13 +284,12 @@ window.open(url, "_blank");
 
       if (extsting.id) {
         newRecord.id = extsting.id;
-        if(newRecord.modifiedDateTime > extsting.modifiedDateTime){
+        if (newRecord.modifiedDateTime > extsting.modifiedDateTime) {
           await newRecord.save();
-        }        
+        }
       } else {
         await newRecord.save();
       }
-      
     }
   }
 }

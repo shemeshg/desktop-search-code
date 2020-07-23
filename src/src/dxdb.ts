@@ -17,7 +17,7 @@ export class AppDatabase extends Dexie {
 
     this.version(1).stores({
       cashedSearchs: '++id, uuid, searchEngine, searchTerm, [searchEngine+searchTerm]',
-      localBookmarks: '++id, uuid, workbookId,  [workbookId+isFavorite]',
+      localBookmarks: '++id, uuid, workbookId,  [workbookId+isFavorite], [workbookId+isDeleted], [workbookId+isDeleted+isFavorite]',
       workbooks: '++id, uuid',
       externalSearchs: '++id, uuid',
     });
