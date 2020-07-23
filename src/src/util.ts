@@ -37,22 +37,23 @@ export  async function doImport(str: string){
     bookmarks: TLocalBookmark[];
   }[] = JSON.parse(str);
 
+
   for (let r = 0; r < ret.length; r++) {
-    let workbook = await Workbook.getByUuid(ret[r].workbook.uuid);
-    if (!workbook.id) {
-      delete ret[r].workbook.id;
-    } else {
-      ret[r].workbook.id = workbook.id;
-    }
-    workbook = new Workbook(ret[r].workbook);
-    await workbook.save;
+    const newWorkbook = new Workbook(ret[r].workbook)
+    delete newWorkbook.id
+    const oldWorkbook = await Workbook.getByUuid(ret[r].workbook.uuid);
+    if (oldWorkbook.id) {
+      newWorkbook.id = oldWorkbook.id
+    } 
+    await newWorkbook.save();
+    
 
     for (let i = 0; i < ret[r].bookmarks.length; i++) {
       const row: TLocalBookmark = ret[r].bookmarks[i];
       const newRecord = new LocalBookmark(row);
       delete newRecord.id;
       newRecord.uuid = row.uuid;
-      newRecord.workbookId = workbook.id as number;
+      newRecord.workbookId = newWorkbook.id as number;
       const extsting = await LocalBookmark.getByUuid(newRecord.uuid);
 
       if (extsting.id) {

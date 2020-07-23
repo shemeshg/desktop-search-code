@@ -8,20 +8,50 @@ const CLIENT_ID = "t2iwru3p0tsf7aa"
   return localStorage.getItem("dropbox")
 }
 
+export function downloadFile(filename: string){
+  const ACCESS_TOKEN = localStorage.getItem("dropbox");
+  if (ACCESS_TOKEN === null){return;}
+  const dbx = new Dropbox.Dropbox({ fetch:fetch, accessToken: ACCESS_TOKEN });
+
+
+  return dbx.filesDownload({path: '/' + filename})
+  // eslint-disable-next-line
+  .then( (response: any)=>{
+    return new Promise(resolve=>{
+      const blob = response.fileBlob;
+      const reader = new FileReader();
+      reader.addEventListener("loadend", function() {
+          resolve(reader.result); // will print out file content
+      });
+      reader.readAsText(blob);
+    })
+
+  })
+}
+
+export function uploadFile(filename: string, content: string){
+  const ACCESS_TOKEN = localStorage.getItem("dropbox");
+  if (ACCESS_TOKEN === null){return;}
+  const dbx = new Dropbox.Dropbox({ fetch:fetch, accessToken: ACCESS_TOKEN });
+
+  // eslint-disable-next-line 
+  const mode: any = "overwrite"
+
+
+
+  return dbx.filesUpload({path: '/' + filename, contents: content, mode: mode})
+
+
+
+}
+
  export function listFiles() {
   const ACCESS_TOKEN = localStorage.getItem("dropbox");
   if (ACCESS_TOKEN === null){return;}
   const dbx = new Dropbox.Dropbox({ fetch:fetch, accessToken: ACCESS_TOKEN });
-  dbx.filesListFolder({path: ''})
-    .then(function(response) {
-      debugger;
-      console.log(response.entries);
-      console.log(response);
-    })
-    .catch(function(error: DropboxTypes.Error<DropboxTypes.files.ListFolderError>) {
-      console.error(error);
-    });
-  return false;
+  return dbx.filesListFolder({path: ''})
+
+
 }
 
 
@@ -69,7 +99,6 @@ function parseQueryString(str: string) {
 
 export function setAccessTokenFromUrl() {
   const  str = parseQueryString(window.location.hash)['access_token'] as string;
-  debugger;
   localStorage.setItem("dropbox",str)
 }
 
