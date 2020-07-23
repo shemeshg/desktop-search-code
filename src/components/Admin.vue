@@ -1,5 +1,9 @@
 <template>
   <b-container fluid>
+    <h2>Manual Sync</h2>
+    <p>
+      <b-link v-on:click="dropboxSync">Dropbox Sync</b-link>
+    </p>
     <h2>Chrome extention: drag link to chrome bookmarks bar</h2>
     <a v-bind:href="addDesktopsearchBookmark">Add Bookmark</a>
     <h2>Workbooks</h2>
@@ -147,6 +151,12 @@ window.open(url, "_blank");
     this.$store.state.pageName = "Admin";
   }
 
+  dropboxSync() {
+    this.$router.push({
+      name: "dropboxsync",
+    });
+  }
+
   async addExternalSearchParam(externalSearch: TExternalSearch) {
     const w = new ExternalSearchParam();
     w.paramName = "q";
@@ -178,8 +188,7 @@ window.open(url, "_blank");
     await w.delete();
 
     this.workbooks.splice(idx, 1);
-    this.$store.commit("emitSelectedWorkbookId", Number(this.workbooks[0].id)); 
-    
+    this.$store.commit("emitSelectedWorkbookId", Number(this.workbooks[0].id));
   }
 
   async purgeWorkbook(workbook: TWorkbook) {
@@ -272,7 +281,7 @@ window.open(url, "_blank");
   }
 
   async doExportBookmarks() {
-    const ret = await Util.doExport()
+    const ret = await Util.doExport();
 
     Util.downloadFileAsString("workbookBookmarks", ret);
   }
@@ -285,7 +294,7 @@ window.open(url, "_blank");
 
     el.value = "";
 
-    await Util.doImport(str)
+    await Util.doImport(str);
   }
 }
 </script>

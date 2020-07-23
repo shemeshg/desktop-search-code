@@ -1,15 +1,14 @@
 import * as Dropbox from "dropbox"
 
-// http://localhost:8080/Dropboxsync/#uid=2813195024&access_token=sl.Aea_HOJLIQ5bJg9XdkyyEo7wOqJFxSlQJFzAIaTXCIyrFhKussVZBDBhp-zSfC6HoXixAWjjtht9z5MXvwLtq-aAH4lC4JA9sZtco9L0Z4zjHPoMSYWw3oOra_bQ5vK-TxKJqT4&expires_in=14400&token_type=bearer&scope=account_info.read+files.content.read+files.content.write+files.metadata.read+files.metadata.write&account_id=dbid%3AAADki0elB8xehVKg5bsYzP6lXDh-SMMMozo
-
 const CLIENT_ID = "t2iwru3p0tsf7aa"
+const LOCAL_STORAGE = "dropbox"
 
- function isAuthenticated(){
-  return localStorage.getItem("dropbox")
+export function isAuthenticated(){
+  return localStorage.getItem(LOCAL_STORAGE)
 }
 
 export function downloadFile(filename: string){
-  const ACCESS_TOKEN = localStorage.getItem("dropbox");
+  const ACCESS_TOKEN = localStorage.getItem(LOCAL_STORAGE);
   if (ACCESS_TOKEN === null){return;}
   const dbx = new Dropbox.Dropbox({ fetch:fetch, accessToken: ACCESS_TOKEN });
 
@@ -30,7 +29,7 @@ export function downloadFile(filename: string){
 }
 
 export function uploadFile(filename: string, content: string){
-  const ACCESS_TOKEN = localStorage.getItem("dropbox");
+  const ACCESS_TOKEN = localStorage.getItem(LOCAL_STORAGE);
   if (ACCESS_TOKEN === null){return;}
   const dbx = new Dropbox.Dropbox({ fetch:fetch, accessToken: ACCESS_TOKEN });
 
@@ -46,7 +45,7 @@ export function uploadFile(filename: string, content: string){
 }
 
  export function listFiles() {
-  const ACCESS_TOKEN = localStorage.getItem("dropbox");
+  const ACCESS_TOKEN = localStorage.getItem(LOCAL_STORAGE);
   if (ACCESS_TOKEN === null){return;}
   const dbx = new Dropbox.Dropbox({ fetch:fetch, accessToken: ACCESS_TOKEN });
   return dbx.filesListFolder({path: ''})
@@ -99,12 +98,12 @@ function parseQueryString(str: string) {
 
 export function setAccessTokenFromUrl() {
   const  str = parseQueryString(window.location.hash)['access_token'] as string;
-  localStorage.setItem("dropbox",str)
+  localStorage.setItem(LOCAL_STORAGE,str)
 }
 
 export function authenticate(){
-  if (isAuthenticated()) {return;}
   const dbx = new Dropbox.Dropbox({ fetch:fetch, clientId: CLIENT_ID });
-  const authUrl = dbx.getAuthenticationUrl('http://localhost:8080/Dropboxsync');
+  
+  const authUrl = dbx.getAuthenticationUrl(window.location.href);
   window.location.href = authUrl;
 }

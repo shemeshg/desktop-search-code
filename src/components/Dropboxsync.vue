@@ -1,61 +1,83 @@
 <template>
   <b-container fluid>
-      <h1> Do dropbox sync</h1> 
-      <b-link v-on:click="doAuth()">authenticate</b-link>
-      <br />
-      <b-link v-on:click="doSetLocalStorage()">setLocalStorage</b-link>
-      <br />
-      <b-link v-on:click="doListFiles()">doListFiles</b-link>
-<br />
-      <b-link v-on:click="uploadFile()">uploadFile</b-link>
-<br />
-      <b-link v-on:click="downloadFile()">downloadFile</b-link>
-      
-
-
+    <h1>Dropbox</h1>
+    <p>{{status}}</p>
+    <b-link v-if="this.isTokenValid===false" v-on:click="doAuth()">Authenticate</b-link>
+    <br />
+    <b-link v-on:click="doSync()">Do Sync</b-link>
   </b-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import * as Test from "../src/dropboxSync"
-import * as Util from "../src/util"
+import * as DropboxSync from "../src/dropboxSync";
+import * as Util from "../src/util";
 
 @Component({
-  computed: {
-  }
+  computed: {},
 })
 export default class LocalBookmark extends Vue {
-  doAuth(){
-    Test.authenticate();
+  status = "";
+  isTokenValid = true;
+
+  async doSync() {
+    const exportImportFilename = "backup.txt";
+
+    this.status = "";
+    if (!DropboxSync.isAuthenticated()) {
+      this.status = "Not authenticated";
+      this.isTokenValid = false;
+      return;
+    }
+
+    // eslint-disable-next-line
+    let listOfFiles: any = [];
+    try {
+      listOfFiles = await DropboxSync.listFiles();
+    } catch (error) {
+      this.status = "Could not authenticate";
+      this.isTokenValid = false;
+      return;
+    }
+
+    // eslint-disable-next-line
+    const doDownload =listOfFiles.entries.map((row: any) => {return row.name;}).indexOf(exportImportFilename) > -1;
+    if (doDownload) {
+      this.status = "Downloading changes";
+      const str = (await DropboxSync.downloadFile(exportImportFilename)) as string;
+      await Util.doImport(str);
+      this.$store.dispatch("getApplicationData");
+    }
+    this.status = "Uploading changes";
+    const str = await Util.doExport();
+    await DropboxSync.uploadFile(exportImportFilename, str);
+    this.status = "Completed"
   }
 
-  doSetLocalStorage(){
-    Test.setAccessTokenFromUrl();
+  doAuth() {
+    DropboxSync.authenticate();
   }
 
-  doListFiles(){
-    Test.listFiles()
+  doSetLocalStorage() {
+    DropboxSync.setAccessTokenFromUrl();
   }
 
-  async uploadFile(){
-    const str = await Util.doExport()
-    Test.uploadFile("myTextFile.txt",str)
-  }
 
-  async downloadFile(){
-    const str  = await Test.downloadFile("myTextFile.txt") as string
-    await Util.doImport(str);
-    this.$store.dispatch('getApplicationData')
-  }
+ 
 
   mounted() {
     this.$store.state.pageName = "Dropbox Sync";
+    this.status = "";
+    this.isTokenValid = true;
+    if (window.location.hash){
+      this.doSetLocalStorage()
+      this.$router.push({
+            name: "dropboxsync"
+          });
+      return;
+    }
+    
   }
-
-
-
-
 }
 </script>
 
