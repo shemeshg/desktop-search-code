@@ -13,8 +13,8 @@
         <li v-for="(workbook, idx) in workbooks" :key="workbook.uuid" class="mb-2">
           <b-form-input :value="workbook.name" @change="emitWorkbookName(workbook, $event)"></b-form-input>
 
-          <span v-if="workbooks.length !== 1">
-            <b-link v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>&nbsp;|
+          <span>
+            <b-link v-if="workbooks.length !== 1" v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>&nbsp;|
             <b-link v-on:click="purgeWorkbook(workbook)">Purge</b-link>&nbsp;|
             <b-badge
               variant="success"
