@@ -4,7 +4,11 @@
     <p>{{status}}</p>
     <b-link v-if="this.isTokenValid===false" v-on:click="doAuth()">Authenticate</b-link>
     <br />
-    <b-link v-on:click="doSync()">Do Sync</b-link>
+    <b-link v-on:click="doSync(false)">Do Sync</b-link>
+    <br />
+    <p>Upload only for every time workbook is delited or renamed or delete the backup file on dropbox</p>
+    <p>this is required since no log for changes exists on bookmark table</p>
+    <b-link v-on:click="doSync(true)">Do Upload Only</b-link>
   </b-container>
 </template>
 
@@ -20,7 +24,7 @@ export default class LocalBookmark extends Vue {
   status = "";
   isTokenValid = true;
 
-  async doSync() {
+  async doSync(forceUploadOnly: boolean) {
     const exportImportFilename = "backup.txt";
 
     this.status = "";
@@ -42,7 +46,7 @@ export default class LocalBookmark extends Vue {
 
     // eslint-disable-next-line
     const doDownload =listOfFiles.entries.map((row: any) => {return row.name;}).indexOf(exportImportFilename) > -1;
-    if (doDownload) {
+    if (doDownload && !forceUploadOnly) {
       this.status = "Downloading changes";
       const str = (await DropboxSync.downloadFile(exportImportFilename)) as string;
       await Util.doImport(str);
