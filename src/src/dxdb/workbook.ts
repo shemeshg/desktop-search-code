@@ -5,6 +5,7 @@ export interface TWorkbook {
   id?: number;
   uuid: string;
   name: string;
+  isExport: number;
 }
 
 
@@ -12,6 +13,7 @@ export class Workbook implements TWorkbook {
   id?: number;
   uuid = uuid();
   name = "";
+  isExport = 1;
 
   // eslint-disable-next-line
   constructor(w: TWorkbook | undefined) {
@@ -19,6 +21,7 @@ export class Workbook implements TWorkbook {
       this.id = w.id
       this.name = w.name;
       this.uuid = w.uuid;
+      this.isExport = w.isExport;
     }
   }
 
@@ -29,6 +32,11 @@ export class Workbook implements TWorkbook {
   delete() {
     if (this.id === undefined) { return; }
     return db.workbooks.delete(this.id)
+  }
+
+  static async getByUuid(uuid: string) {
+    const r = await db.workbooks.where({uuid: uuid}).toArray()
+    return new Workbook( r[0]);
   }
 
   static async deleteById(id: number) {

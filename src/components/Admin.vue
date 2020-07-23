@@ -11,7 +11,13 @@
 
           <span v-if="workbooks.length !== 1">
             <b-link v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>&nbsp;|
-            <b-link v-on:click="purgeWorkbook(workbook)">Purge</b-link>
+            <b-link v-on:click="purgeWorkbook(workbook)">Purge</b-link>&nbsp;|
+            <b-badge
+              variant="success"
+              v-if="workbook.isExport"
+              v-on:click="doToggleExport(workbook)"
+            >Export</b-badge>
+            <b-badge variant v-if="!workbook.isExport" v-on:click="doToggleExport(workbook)">Export</b-badge>
           </span>
         </li>
       </ul>
@@ -94,7 +100,7 @@ import { mapState } from "vuex";
 
 import { Component, Vue } from "vue-property-decorator";
 import { TWorkbook, Workbook } from "../src/dxdb/workbook";
-import { LocalBookmark, TLocalBookmark } from "../src/dxdb/localBookmark";
+import { LocalBookmark } from "../src/dxdb/localBookmark";
 import {
   TExternalSearch,
   ExternalSearch,
@@ -159,6 +165,12 @@ window.open(url, "_blank");
     return w.save();
   }
 
+  async doToggleExport(workbook: TWorkbook) {
+    workbook.isExport = workbook.isExport ? 0 : 1;
+    const w = new Workbook(workbook);
+    await w.save();
+  }
+
   async deleteWorkbook(workbook: TWorkbook, idx: number) {
     await LocalBookmark.deleteByWorkbookId(Number(workbook.id));
 
@@ -166,13 +178,13 @@ window.open(url, "_blank");
     await w.delete();
 
     this.workbooks.splice(idx, 1);
-    this.selectedWorkbookId = Number(this.workbooks[0].id);
+    this.$store.commit("emitSelectedWorkbookId", Number(this.workbooks[0].id)); 
+    
   }
 
-  async purgeWorkbook(workbook: TWorkbook){
+  async purgeWorkbook(workbook: TWorkbook) {
     await LocalBookmark.purgeByWorkbookId(Number(workbook.id));
   }
-
 
   async deleteExternalSearch(externalSearch: TExternalSearch, idx: number) {
     const w = new ExternalSearch(externalSearch);
@@ -253,17 +265,16 @@ window.open(url, "_blank");
   }
 
   // eslint-disable-next-line
-  emitWorkbookName(workbook: TWorkbook, event: any) {
-    workbook.name = event.target.value;
+  emitWorkbookName(workbook: TWorkbook, event: string) {
+    workbook.name = event;
     const w = new Workbook(workbook);
     return w.save();
   }
 
   async doExportBookmarks() {
-    const bookmarks = await LocalBookmark.getAllByWorkbookId(
-      this.selectedWorkbookId
-    );
-    Util.downloadFileAsString("workbookBookmarks", JSON.stringify(bookmarks));
+    const ret = await Util.doExport()
+
+    Util.downloadFileAsString("workbookBookmarks", ret);
   }
 
   // eslint-disable-next-line
@@ -273,24 +284,8 @@ window.open(url, "_blank");
     const str = await Util.readFileAsString(el);
 
     el.value = "";
-    const bookmarks = JSON.parse(str);
-    for (let i = 0; i < bookmarks.length; i++) {
-      const row: TLocalBookmark = bookmarks[i];
-      const newRecord = new LocalBookmark(row);
-      delete newRecord.id;
-      newRecord.uuid = row.uuid;
-      newRecord.workbookId = this.selectedWorkbookId;
-      const extsting = await LocalBookmark.getByUuid(newRecord.uuid);
 
-      if (extsting.id) {
-        newRecord.id = extsting.id;
-        if (newRecord.modifiedDateTime > extsting.modifiedDateTime) {
-          await newRecord.save();
-        }
-      } else {
-        await newRecord.save();
-      }
-    }
+    await Util.doImport(str)
   }
 }
 </script>

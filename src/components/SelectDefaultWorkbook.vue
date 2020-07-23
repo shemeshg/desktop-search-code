@@ -1,5 +1,5 @@
 <template>
-    <b-form-select v-model="selectedWorkbookId" @change="emitSelectedWorkbookId">
+    <b-form-select :value="selectedWorkbookId" @change="emitSelectedWorkbookId">
       <b-form-select-option 
         v-for="option in workbooks"
         v-bind:key="option.uuid"
@@ -23,6 +23,7 @@ import { Workbook } from "../src/dxdb/workbook";
 export default class SelectDefaultWorkbook extends Vue {
   selectedWorkbookId!: number;
   workbooks!: Workbook[];
+
 
   // eslint-disable-next-line
   emitSelectedWorkbookId(e: number) {
