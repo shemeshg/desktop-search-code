@@ -13,7 +13,7 @@ export class Workbook implements TWorkbook {
   id?: number;
   uuid = uuid();
   name = "";
-  isExport = 1;
+  isExport = 0;
 
   // eslint-disable-next-line
   constructor(w: TWorkbook | undefined) {
