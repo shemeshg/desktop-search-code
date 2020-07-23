@@ -27,11 +27,17 @@ Vue.use(VueRouter)
     props: true ,
     component: () => import('../views/Admin.vue')
   },
-
+  {
+    path: '/Dropboxsync',
+    name: "dropboxsync",
+    props: true ,
+    component: () => import('../views/Dropboxsync.vue')
+  },  
   
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 

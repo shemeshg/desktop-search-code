@@ -9,7 +9,7 @@
         <li v-for="(workbook, idx) in workbooks" :key="workbook.uuid" class="mb-2">
           <b-form-input :value="workbook.name" @change="emitWorkbookName(workbook, $event)"></b-form-input>
 
-          <span v-if="idx !== 0">
+          <span v-if="workbooks.length !== 1">
             <b-link v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>
           </span>
         </li>
@@ -81,7 +81,7 @@
 
     <b-card class="mb-2">
       <h2>Export</h2>
-      <b-button class="mr-1" v-on:click="doExportBookmarks">Export bookmarks</b-button>
+      <b-button class="mr-1" v-on:click="doExportBookmarks">Export</b-button>
       <h2>Import</h2>
       <input class="btn mr-1 btn-secondary" type="file" @change="doImportBookmarks" ref="el" />
     </b-card>
@@ -100,6 +100,8 @@ import {
   ExternalSearchParam
 } from "../src/dxdb/externalSearch";
 import * as Util from "../src/util";
+
+
 
 @Component({
   computed: {
@@ -128,8 +130,8 @@ r = {title: title, url: url, description: description, keywords: keywords, hostn
 
 rs=JSON.stringify(r);
 url = "${window.location.href.replace(
-    "#/admin",
-    "#/localBookmark/-2"
+    "/admin",
+    "/localBookmark/-2"
   )}" + encodeURIComponent(rs);
 
 window.open(url, "_blank");
@@ -139,6 +141,7 @@ window.open(url, "_blank");
   mounted() {
     this.$store.state.pageName = "Admin";
   }
+
 
   async addExternalSearchParam(externalSearch: TExternalSearch) {
     const w = new ExternalSearchParam();
