@@ -58,9 +58,7 @@ export default class LocalBookmark extends Vue {
     DropboxSync.authenticate();
   }
 
-  doSetLocalStorage() {
-    DropboxSync.setAccessTokenFromUrl();
-  }
+
 
 
  
@@ -69,13 +67,6 @@ export default class LocalBookmark extends Vue {
     this.$store.state.pageName = "Dropbox Sync";
     this.status = "";
     this.isTokenValid = true;
-    if (window.location.hash){
-      this.doSetLocalStorage()
-      this.$router.push({
-            name: "dropboxsync"
-          });
-      return;
-    }
     
   }
 }
