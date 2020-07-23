@@ -273,11 +273,11 @@ export default class Home extends Vue {
       this.searchTextForResult,
       this.selectedWorkbookId
     );
-    this.$router.push({ name: "localBookmark", params: { id: id.toString() } });
+    this.$router.replace({ name: "localBookmark", params: { id: id.toString() } });
   }
 
   addNewBookmark() {
-    this.$router.push({ name: "localBookmark", params: { id: "-1" } });
+    this.$router.replace({ name: "localBookmark", params: { id: "-1" } });
   }
 
   async doSearch() {

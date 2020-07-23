@@ -14,7 +14,8 @@
           <b-form-input :value="workbook.name" @change="emitWorkbookName(workbook, $event)"></b-form-input>
 
           <span>
-            <b-link v-if="workbooks.length !== 1" v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>&nbsp;|
+            <b-link v-if="workbooks.length !== 1" v-on:click="deleteWorkbook(workbook, idx)">Del</b-link>
+            &nbsp;<span v-if="workbooks.length !== 1">|</span>
             <b-link v-on:click="purgeWorkbook(workbook)">Purge</b-link>&nbsp;|
             <b-badge
               variant="success"
@@ -152,7 +153,7 @@ window.open(url, "_blank");
   }
 
   dropboxSync() {
-    this.$router.push({
+    this.$router.replace({
       name: "dropboxsync",
     });
   }

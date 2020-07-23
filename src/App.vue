@@ -5,9 +5,9 @@
         <b-row >
           <b-col >
             <h5>
-            <router-link to="/" ref="home">Home</router-link>|
-            <router-link to="/admin" ref="admin">Admin</router-link>|
-            <router-link to="/about" ref="about">About</router-link>  
+            <router-link to="/" ref="home" replace>Home</router-link>|
+            <router-link to="/admin" ref="admin" replace>Admin</router-link>|
+            <router-link to="/about" ref="about" replace>About</router-link>  
                 </h5>   
           </b-col>
           <b-col >
