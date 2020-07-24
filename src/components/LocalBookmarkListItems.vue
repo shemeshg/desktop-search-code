@@ -71,7 +71,7 @@ export default class LocalBookmarkListItems extends Vue {
   }
 
   doEditItem(itemId: number) {
-    this.$router.replace({
+    this.$router.push({
       name: "localBookmark",
       params: { id: itemId.toString() }
     });
