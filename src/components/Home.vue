@@ -133,12 +133,12 @@ import { applicationConfig, SearchTypes } from "../src/ApplicationConfig";
 
 @Component({
   computed: {
-    ...mapState(["selectedWorkbookId", "workbooks"])
+    ...mapState(["selectedWorkbookId", "workbooks"]),
   },
   components: {
     LocalBookmarkListItems,
-    SelectDefaultExternalSearch
-  }
+    SelectDefaultExternalSearch,
+  },
 })
 export default class Home extends Vue {
   @Prop() private msg!: string;
@@ -161,9 +161,9 @@ export default class Home extends Vue {
 
   searchResult: GenericSearchResult[] = [];
   searchLocalResult: GenericSearchResult[] = [];
-  
-  destroyed(){
-    window.removeEventListener('keypress', this.doKeypressParse);
+
+  destroyed() {
+    window.removeEventListener("keypress", this.doKeypressParse);
   }
 
   created() {
@@ -172,19 +172,18 @@ export default class Home extends Vue {
 
   mounted() {
     this.$store.state.pageName = "Home";
-    window.removeEventListener('keypress', this.doKeypressParse);
-    window.addEventListener('keypress', this.doKeypressParse)
+    window.removeEventListener("keypress", this.doKeypressParse);
+    window.addEventListener("keypress", this.doKeypressParse);
   }
 
-  doKeypressParse(e: KeyboardEvent){
-    if (e.ctrlKey === true && e.code === "Enter"){
-      this.doRedirect()
-    } else if (e.altKey === true && e.code === "Enter"){
-      this.doExternal()
-    } else if ( e.code === "Enter"){
-          this.doSearch()
+  doKeypressParse(e: KeyboardEvent) {
+    if (e.ctrlKey === true && e.code === "Enter") {
+      this.doRedirect();
+    } else if (e.altKey === true && e.code === "Enter") {
+      this.doExternal();
+    } else if (e.code === "Enter") {
+      this.doSearch();
     }
-    
   }
 
   get getSearchPlaceholder() {
@@ -250,7 +249,9 @@ export default class Home extends Vue {
     await this.doSearch();
     if (
       this.searchLocalResult.length > 0 &&
-      this.searchLocalResult.filter( (row)=>{return !row.relatedSubject}).length === 1 &&
+      this.searchLocalResult.filter((row) => {
+        return !row.relatedSubject;
+      }).length === 1 &&
       !this.searchLocalResult[0].relatedSubject
     ) {
       const url = this.searchLocalResult[0].url;
@@ -318,9 +319,11 @@ export default class Home extends Vue {
   }
 
   focusSearchText() {
-    // eslint-disable-next-line
-    const el: any = this.$refs.searchText;
-    el.$el.focus();
+    if (screen.width > 480) {
+      // eslint-disable-next-line
+      const el: any = this.$refs.searchText;
+      el.$el.focus();
+    }
   }
 
   private async searchLocalFulltext(
