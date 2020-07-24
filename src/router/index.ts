@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 
-import * as DropboxSync from "../src/dropboxSync"
 
 Vue.use(VueRouter)
 
@@ -11,21 +10,6 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
-    ,beforeEnter: (to, from, next) => {
-      if (window.location.href.search("access_token") > -1){
-        DropboxSync.setAccessTokenFromUrl();
-        next({
-          name: "dropboxsync" 
-        });
-      } else {
-        next()
-      }
-      
-      
-      
-      
-      
-    }
   },
   {
     path: '/about',
@@ -55,6 +39,8 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
+  mode: 'history',
+  base: '/desktop-search/',
   routes
 })
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container fluid>
-      <h1>Bookmark Manager v0.13.0</h1>
+      <h1>Bookmark Manager v0.14.0</h1>
       <p>Search duckduckgo api</p>
       <p>Redirect search of duckduckgo, google or any other search engine.</p>  
       <pre>

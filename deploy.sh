@@ -11,6 +11,7 @@ npm run build
 # navigate into the build output directory
 cd dist
 
+cp ../404.html .
 # if you are deploying to a custom domain
 # echo 'www.example.com' > CNAME
 

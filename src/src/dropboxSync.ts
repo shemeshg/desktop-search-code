@@ -104,6 +104,6 @@ export function setAccessTokenFromUrl() {
 export function authenticate(){
   const dbx = new Dropbox.Dropbox({ fetch:fetch, clientId: CLIENT_ID });
   
-  const authUrl = dbx.getAuthenticationUrl(window.location.href.replace("/#/Dropboxsync","") );
+  const authUrl = dbx.getAuthenticationUrl(window.location.href );
   window.location.href = authUrl;
 }
