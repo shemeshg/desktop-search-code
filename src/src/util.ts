@@ -45,7 +45,7 @@ export  async function doImport(str: string){
     if (oldWorkbook.id) {
       newWorkbook.id = oldWorkbook.id
     } 
-    debugger;
+
     if (!newWorkbook.isExport && !oldWorkbook.id){continue;}
 
     if (oldWorkbook.id) {
