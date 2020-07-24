@@ -6,6 +6,7 @@ export interface TWorkbook {
   uuid: string;
   name: string;
   isExport: number;
+  modifiedDateTime: number;
 }
 
 
@@ -14,6 +15,7 @@ export class Workbook implements TWorkbook {
   uuid = uuid();
   name = "";
   isExport = 0;
+  modifiedDateTime = 0;
 
   // eslint-disable-next-line
   constructor(w: TWorkbook | undefined) {
@@ -22,10 +24,12 @@ export class Workbook implements TWorkbook {
       this.name = w.name;
       this.uuid = w.uuid;
       this.isExport = w.isExport;
+      this.modifiedDateTime = w.modifiedDateTime;
     }
   }
 
   save() {
+    this.modifiedDateTime = new Date().getTime();
     return db.workbooks.put(this, this.id)
   }
 

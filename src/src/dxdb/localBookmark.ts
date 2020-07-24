@@ -17,6 +17,7 @@ export interface TLocalBookmark {
   sublinks: SubLink[];
   isFavorite: number;
   isDeleted: number;
+  modifiedDateTime: number;
 }
 
 function sortOrderFunc(firstEl: TLocalBookmark, secondEl: TLocalBookmark) {
@@ -56,7 +57,7 @@ export class LocalBookmark implements TLocalBookmark {
       this.relatedSubject = t.relatedSubject
       this.sublinks = t.sublinks
       this.isFavorite = t.isFavorite
-      this.modifiedDateTime = new Date().getTime();
+      this.modifiedDateTime = t.modifiedDateTime;
       this.isDeleted = t.isDeleted
     }
 
@@ -107,6 +108,7 @@ export class LocalBookmark implements TLocalBookmark {
       header: item.header, text: item.text, relatedSubject: item.relatedSubject, sublinks: item.sublinks,
       isFavorite: 0,
       isDeleted: 0,
+      modifiedDateTime: new Date().getTime()
     })
   }
 

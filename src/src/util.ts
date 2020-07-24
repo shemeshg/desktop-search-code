@@ -46,7 +46,16 @@ export  async function doImport(str: string){
       newWorkbook.id = oldWorkbook.id
     } 
     if (!oldWorkbook.isExport && !oldWorkbook.id){continue;}
-    await newWorkbook.save();
+
+    if (oldWorkbook.id) {
+      newWorkbook.id = oldWorkbook.id;
+      if (newWorkbook.modifiedDateTime > oldWorkbook.modifiedDateTime) {
+        await newWorkbook.save();
+      }
+    } else {
+      await newWorkbook.save();
+    }
+
     
 
     for (let i = 0; i < ret[r].bookmarks.length; i++) {
