@@ -20,8 +20,6 @@ export default {
     const r = {title: title, url: url, description: text, keywords: "", hostname: ""};
 
     const rs=JSON.stringify(r);
-    //http://localhost:8080/desktop-search/sharedtarget?title=Bookmark%20Manager&text=https%3A%2F%2Fshemeshg.github.io%2Fdesktop-search%2F%23%2F
-    debugger;
     this.$router.replace( {name: "localBookmark", params: { id: "-2" + encodeURIComponent(rs)}})
 
 
