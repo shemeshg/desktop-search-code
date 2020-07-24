@@ -17,6 +17,11 @@ Vue.use(VueRouter)
     component: () => import('../views/About.vue')
   },
   {
+    path: '/sharetarget',
+    name: 'Sharetarget',
+    component: () => import('../views/Sharetarget.vue')
+  },  
+  {
     path: '/localBookmark/:id',
     name: "localBookmark",
     props: true ,

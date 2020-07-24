@@ -101,7 +101,13 @@ export default class LocalBookmark extends Vue {
 
   async doDelete() {
     if (this.id.substr(0, 2) === "-2") {
-      window.close();
+
+        window.close();
+
+      this.$router.replace({
+        name: "Home",
+      });      
+
       return;
     }
 
@@ -135,7 +141,12 @@ export default class LocalBookmark extends Vue {
     await this.localBookmark.save();
 
     if (this.id.substr(0, 2) === "-2") {
+
       window.close();
+
+      this.$router.replace({
+        name: "Home",
+      });  
     } else {
       this.$router.back();
     }

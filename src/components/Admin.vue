@@ -4,7 +4,7 @@
     <p>
       <b-link v-on:click="dropboxSync">Dropbox Sync</b-link>
     </p>
-    <h2>Chrome extention: drag link to chrome bookmarks bar</h2>
+    <h2>Chrome extention: drag link to chrome bookmarks bar, not required for mobile (implemented via share api)</h2>    
     <a v-bind:href="addDesktopsearchBookmark">Add Bookmark</a>
     <h2>Workbooks</h2>
     <b-card class="mb-2">
