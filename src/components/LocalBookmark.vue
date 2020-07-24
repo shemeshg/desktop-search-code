@@ -62,8 +62,8 @@ import { mapState } from "vuex";
 
 @Component({
   computed: {
-    ...mapState(["selectedWorkbookId"])
-  }
+    ...mapState(["selectedWorkbookId"]),
+  },
 })
 export default class LocalBookmark extends Vue {
   @Prop() private id!: string;
@@ -100,10 +100,13 @@ export default class LocalBookmark extends Vue {
   }
 
   async doDelete() {
-    if (this.id.substr(0,2) === "-2"){
+    if (this.id.substr(0, 2) === "-2") {
+      /*
       this.$router.replace({
             name: "Home"
           });
+      */
+      window.close();
       return;
     }
 
@@ -129,42 +132,48 @@ export default class LocalBookmark extends Vue {
     this.localBookmark.isFavorite = this.isFavorite ? 1 : 0;
     this.localBookmark.workbookId = this.selectedWorkbookId;
 
-    elms.forEach(e => {
+    elms.forEach((e) => {
       if (!(e === "")) {
         this.localBookmark.tags.push(e.toLowerCase().trim());
       }
     });
     await this.localBookmark.save();
 
-    if (this.id.substr(0,2) === "-2"){
-      this.$router.replace({
-            name: "Home"
-          });
+    if (this.id.substr(0, 2) === "-2") {
+      /*
+        this.$router.replace({
+              name: "Home"
+            });
+        */
+      window.close();
     } else {
       this.$router.back();
     }
-    
   }
 
   async created() {
-    let id = -1
-    if (this.id.substr(0,2) === "-2"){      
-      const parsed = JSON.parse( decodeURIComponent(this.id.substr(2)) )
-      
-      this.localBookmark.header =  parsed.title;
-      this.localBookmark.text =  parsed.description
-      this.localBookmark.url = parsed.url
-      
+    let id = -1;
+    if (this.id.substr(0, 2) === "-2") {
+      const parsed = JSON.parse(decodeURIComponent(this.id.substr(2)));
+
+      this.localBookmark.header = parsed.title;
+      this.localBookmark.text = parsed.description;
+      this.localBookmark.url = parsed.url;
+
       let parsedAry = parsed.keywords.split(",");
-      parsedAry.push(parsed.hostname)
-      parsedAry = parsedAry.map( (row: string)=>{return row.trim()} )
-      parsedAry = parsedAry.filter( (row: string)=>{ return row !== ""})
-      
+      parsedAry.push(parsed.hostname);
+      parsedAry = parsedAry.map((row: string) => {
+        return row.trim();
+      });
+      parsedAry = parsedAry.filter((row: string) => {
+        return row !== "";
+      });
+
       this.tags = parsedAry.join("\n");
     } else {
       id = parseInt(this.id);
     }
-    
+
     if (id > 0) {
       const t = await LocalBookmarkClass.getById(id);
       this.localBookmark = new LocalBookmarkClass(t);
