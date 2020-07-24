@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-# https://cli.vuejs.org/guide/deployment.html#github-pages
-
 # abort on errors
 set -e
+
+rm -rf dist
 
 # build
 npm run build
@@ -30,7 +30,7 @@ git branch gh-pages
 git push -u origin gh-pages --force
 
 
-http://shemeshg.github.io/desktop-search
+# website http://shemeshg.github.io/desktop-search
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
 # git push -f git@github.com:<USERNAME>/<REPO>.git master:gh-pages
