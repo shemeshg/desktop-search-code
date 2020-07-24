@@ -319,7 +319,7 @@ export default class Home extends Vue {
   }
 
   focusSearchText() {
-    if (screen.width > 480) {
+    if (screen.width > 480 && screen.height > 480) {
       // eslint-disable-next-line
       const el: any = this.$refs.searchText;
       el.$el.focus();
