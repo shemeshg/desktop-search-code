@@ -222,8 +222,7 @@ export default class Home extends Vue {
   async doMoveResultToWorkbook() {
     for (let i = 0; i < this.searchLocalResult.length; i++) {
       const r = await LocalBookmark.getByUuid(this.searchLocalResult[i].uuid);
-      r.workbookId = this.movetoWorkbookId;
-      await r.save();
+      await r.moveToWorkbook(this.movetoWorkbookId);
     }
     this.doClear();
   }

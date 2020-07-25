@@ -15,6 +15,7 @@ module.exports = {
     appleMobileWebAppCapable: 'yes',
     manifestOptions: {
       "share_target": {
+        "enctype": "application/x-www-form-urlencoded",
         "action": "/desktop-search/sharetarget",
         "method": "GET",
         "params": {

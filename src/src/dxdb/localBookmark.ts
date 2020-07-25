@@ -63,6 +63,17 @@ export class LocalBookmark implements TLocalBookmark {
 
   }
 
+  async moveToWorkbook(newWorkbookId: number){
+    if (this.workbookId <0 || this.workbookId === newWorkbookId){return;}
+    this.isDeleted = 1;
+    await this.save();
+    this.isDeleted = 0;
+    delete this.id;
+    this.workbookId = newWorkbookId;
+    this.uuid = uuid();
+    await this.save();    
+  }
+
   save() {
     this.modifiedDateTime = new Date().getTime();
     return db.localBookmarks.put(this, this.id)

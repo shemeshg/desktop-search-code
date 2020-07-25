@@ -126,12 +126,13 @@ export default class LocalBookmark extends Vue {
       refs.form2.reportValidity();
       return;
     }
+    await this.localBookmark.moveToWorkbook(this.selectedWorkbookId);
 
     const elms = this.tags.split("\n");
     this.localBookmark.tags = [];
     this.localBookmark.relatedSubject = !this.feelLucy;
     this.localBookmark.isFavorite = this.isFavorite ? 1 : 0;
-    this.localBookmark.workbookId = this.selectedWorkbookId;
+    
 
     elms.forEach((e) => {
       if (!(e === "")) {
