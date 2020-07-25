@@ -3,7 +3,8 @@
     <b-container fluid>
       <h1>Bookmark Manager v0.15.0</h1>
       <p>Search duckduckgo api</p>
-      <p>Redirect search of duckduckgo, google or any other search engine.</p>  
+      <p>Redirect search of duckduckgo, google or any other search engine.</p> 
+      <p>Set application as search enging ex. https://shemeshg.github.io/desktop-search/?q=%s in chrome</p> 
       <pre>
         Enter - shortcut for search click
         Ctrl.Enter - shortcut for feel lucky click

@@ -174,6 +174,11 @@ export default class Home extends Vue {
     this.$store.state.pageName = "Home";
     window.removeEventListener("keypress", this.doKeypressParse);
     window.addEventListener("keypress", this.doKeypressParse);
+
+    if(this.$route.query.q){
+      this.searchText = this.$route.query.q.toString();
+      return this.doRedirect()
+    }
   }
 
   doKeypressParse(e: KeyboardEvent) {
