@@ -4,7 +4,7 @@
       v-model.number="searchType"
       name="searchtype"
       size="sm"
-      @change="searchTypeChange($event)"
+      @change="searchTypeChange($event)"      
     >
       <b-form-radio value="0">Tags</b-form-radio>
       <b-form-radio value="1">Fulltext</b-form-radio>
@@ -336,8 +336,12 @@ export default class Home extends Vue {
     }
   }
 
+  private isBogScreen(){
+    return screen.width > 480 && screen.height > 480
+  }
+
   focusSearchText() {
-    if (screen.width > 480 && screen.height > 480) {
+    if (this.isBogScreen()) {
       // eslint-disable-next-line
       const el: any = this.$refs.searchText;
       el.$el.focus();
