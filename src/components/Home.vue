@@ -174,23 +174,13 @@ export default class Home extends Vue {
     this.$store.state.pageName = "Home";
     window.removeEventListener("keypress", this.doKeypressParse);
     window.addEventListener("keypress", this.doKeypressParse);
-
+    
     if (Object.prototype.hasOwnProperty.call(this.$route.query, "q")) {
       this.searchText = this.$route.query.q.toString();
-      if (Object.prototype.hasOwnProperty.call(this.$route.query, "r")) {
-        // This is bad walkaround, but database moight is not be opened.
-        Vue.nextTick(() => {
-          return LocalBookmark.getByUuid("Open the database").then(() => {
-            return this.doRedirect();
-          });
-        });
-      } else {
-        Vue.nextTick(() => {
-          // This is bad walkaround, but database moight is not be opened.
-          return LocalBookmark.getByUuid("Open the database").then(() => {
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, "r")) {        
+            return this.doRedirect();          
+      } else {                  
             return this.doSearch();
-          });
-        });
       }
     }
   }
@@ -352,10 +342,11 @@ export default class Home extends Vue {
     onlyFavorites: boolean,
     searchText: string
   ) {
+    const selectedWorkbookId = applicationConfig.load().defaultWorkbookId;
     this.searchLocalResult = await LocalBookmark.fullTextSearch(
       searchText,
       onlyFavorites,
-      this.selectedWorkbookId
+      selectedWorkbookId
     );
 
     this.seeAlso = [];
@@ -363,7 +354,7 @@ export default class Home extends Vue {
     if (searchText) {
       const seeAlso = await LocalBookmark.relatedTags(
         searchText,
-        this.selectedWorkbookId
+        selectedWorkbookId
       );
 
       this.seeAlso = seeAlso.splice(0, 20);
@@ -371,15 +362,16 @@ export default class Home extends Vue {
   }
 
   private async searchLocalTags(searchText: string) {
+    const selectedWorkbookId = applicationConfig.load().defaultWorkbookId;
     const searchExp = searchText + ' or "' + searchText + '"';
     this.searchLocalResult = await LocalBookmark.tagSearch(
       searchExp,
-      this.selectedWorkbookId
+      selectedWorkbookId
     );
 
     const seeAlso = await LocalBookmark.relatedTags(
       searchText,
-      this.selectedWorkbookId
+      selectedWorkbookId
     );
 
     this.seeAlso = seeAlso.splice(0, 20);
