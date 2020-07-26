@@ -4,7 +4,7 @@
       v-model.number="searchType"
       name="searchtype"
       size="sm"
-      @change="searchTypeChange($event)"      
+      @change="searchTypeChange($event)"
     >
       <b-form-radio value="0">Tags</b-form-radio>
       <b-form-radio value="1">Fulltext</b-form-radio>
@@ -168,6 +168,12 @@ export default class Home extends Vue {
 
   created() {
     this.searchType = applicationConfig.searchType;
+  }
+
+  mounted() {
+    this.$store.state.pageName = "Home";
+    window.removeEventListener("keypress", this.doKeypressParse);
+    window.addEventListener("keypress", this.doKeypressParse);
 
     if (Object.prototype.hasOwnProperty.call(this.$route.query, "q")) {
       this.searchText = this.$route.query.q.toString();
@@ -187,12 +193,6 @@ export default class Home extends Vue {
         });
       }
     }
-  }
-
-  mounted() {
-    this.$store.state.pageName = "Home";
-    window.removeEventListener("keypress", this.doKeypressParse);
-    window.addEventListener("keypress", this.doKeypressParse);
   }
 
   doKeypressParse(e: KeyboardEvent) {
@@ -336,8 +336,8 @@ export default class Home extends Vue {
     }
   }
 
-  private isBogScreen(){
-    return screen.width > 480 && screen.height > 480
+  private isBogScreen() {
+    return screen.width > 480 && screen.height > 480;
   }
 
   focusSearchText() {
