@@ -41,7 +41,7 @@ async function onPoulate(){
   p.paramName = "q"
   p.paramValueIsSearchText = true
   r.externalSearchParams = [p]
-  r.save();
+  await r.save();
 
   r = new ExternalSearch(undefined);
   r.name = "google"
@@ -50,7 +50,7 @@ async function onPoulate(){
   p.paramName = "q"
   p.paramValueIsSearchText = true
   r.externalSearchParams = [p]
-  r.save();
+  await r.save();
 }
 
 db.on("populate", () => {

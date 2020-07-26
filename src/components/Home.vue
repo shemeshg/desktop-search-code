@@ -172,28 +172,27 @@ export default class Home extends Vue {
     if (Object.prototype.hasOwnProperty.call(this.$route.query, "q")) {
       this.searchText = this.$route.query.q.toString();
       if (Object.prototype.hasOwnProperty.call(this.$route.query, "r")) {
-        Vue.nextTick(()=> {
-          return this.doRedirect();
-        })
-        
+        // This is bad walkaround, but database moight is not be opened.
+        Vue.nextTick(() => {
+          return LocalBookmark.getByUuid("Open the database").then(() => {
+            return this.doRedirect();
+          });
+        });
       } else {
-        Vue.nextTick(()=> {
-          return this.doSearch().then( ()=>{
-            return this.doSearch()
-          })
-        })
-
-        
+        Vue.nextTick(() => {
+          // This is bad walkaround, but database moight is not be opened.
+          return LocalBookmark.getByUuid("Open the database").then(() => {
+            return this.doSearch();
+          });
+        });
       }
     }
-
   }
 
   mounted() {
     this.$store.state.pageName = "Home";
     window.removeEventListener("keypress", this.doKeypressParse);
     window.addEventListener("keypress", this.doKeypressParse);
-
   }
 
   doKeypressParse(e: KeyboardEvent) {
