@@ -71,9 +71,9 @@ export default class LocalBookmark extends Vue {
     this.$store.state.pageName = "Dropbox Sync";
     this.status = "";
     this.isTokenValid = true;
-    
-    DropboxSync.setAccessTokenFromUrl();
+        
     if (window.location.hash){
+      DropboxSync.setAccessTokenFromUrl();
       this.$router.replace({name: "dropboxsync"})
 
     }
