@@ -168,6 +168,25 @@ export default class Home extends Vue {
 
   created() {
     this.searchType = applicationConfig.searchType;
+
+    if (Object.prototype.hasOwnProperty.call(this.$route.query, "q")) {
+      this.searchText = this.$route.query.q.toString();
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, "r")) {
+        Vue.nextTick(()=> {
+          return this.doRedirect();
+        })
+        
+      } else {
+        Vue.nextTick(()=> {
+          return this.doSearch().then( ()=>{
+            return this.doSearch()
+          })
+        })
+
+        
+      }
+    }
+
   }
 
   mounted() {
@@ -175,16 +194,6 @@ export default class Home extends Vue {
     window.removeEventListener("keypress", this.doKeypressParse);
     window.addEventListener("keypress", this.doKeypressParse);
 
-     
-
-    if (Object.prototype.hasOwnProperty.call(this.$route.query, "q")) {
-      this.searchText = this.$route.query.q.toString();
-      if (Object.prototype.hasOwnProperty.call(this.$route.query, "r")) {
-        return this.doRedirect();
-      } else {
-        return this.doSearch()
-      }
-    }
   }
 
   doKeypressParse(e: KeyboardEvent) {
