@@ -98,7 +98,10 @@ function parseQueryString(str: string) {
 
 export function setAccessTokenFromUrl() {
   const  str = parseQueryString(window.location.hash)['access_token'] as string;
-  localStorage.setItem(LOCAL_STORAGE,str)
+  if (str){
+    localStorage.setItem(LOCAL_STORAGE,str)
+  }
+  
 }
 
 export function authenticate(){
