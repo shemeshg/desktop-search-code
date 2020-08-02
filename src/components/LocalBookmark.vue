@@ -3,7 +3,11 @@
     <b-form ref="form1">
       <p>
         <b-badge variant="success" v-if="feelLucy" v-on:click="doToggleLucky()">Feel lucky</b-badge>
-        <b-badge variant v-if="!feelLucy" v-on:click="doToggleLucky()">Feel lucky</b-badge>&nbsp; |
+        <b-badge variant v-if="!feelLucy" v-on:click="doToggleLucky()">Feel lucky</b-badge>&nbsp; |        
+        <b-badge variant="success" v-if="localBookmark.isFreetextTagsOnly" 
+          v-on:click="localBookmark.isFreetextTagsOnly = Number( !localBookmark.isFreetextTagsOnly )">Fulltext tags only</b-badge>
+        <b-badge variant v-if="!localBookmark.isFreetextTagsOnly" 
+          v-on:click="localBookmark.isFreetextTagsOnly = Number( !localBookmark.isFreetextTagsOnly )">Fulltext tags only</b-badge>&nbsp; |        
         <b-icon
           icon="heart-fill"
           variant="success"

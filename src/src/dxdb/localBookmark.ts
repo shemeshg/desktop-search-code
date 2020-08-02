@@ -17,6 +17,7 @@ export interface TLocalBookmark {
   sublinks: SubLink[];
   isFavorite: number;
   isDeleted: number;
+  isFreetextTagsOnly: number;
   modifiedDateTime: number;
 }
 
@@ -43,6 +44,7 @@ export class LocalBookmark implements TLocalBookmark {
   isFavorite = 0
   modifiedDateTime = 0;
   isDeleted = 0
+  isFreetextTagsOnly = 0;
 
   constructor(t: TLocalBookmark | undefined) {
     if (t !== undefined) {
@@ -59,6 +61,7 @@ export class LocalBookmark implements TLocalBookmark {
       this.isFavorite = t.isFavorite
       this.modifiedDateTime = t.modifiedDateTime;
       this.isDeleted = t.isDeleted
+      this.isFreetextTagsOnly = t.isFreetextTagsOnly
     }
 
   }
@@ -119,6 +122,7 @@ export class LocalBookmark implements TLocalBookmark {
       header: item.header, text: item.text, relatedSubject: item.relatedSubject, sublinks: item.sublinks,
       isFavorite: 0,
       isDeleted: 0,
+      isFreetextTagsOnly: 0,
       modifiedDateTime: new Date().getTime()
     })
   }
@@ -154,10 +158,14 @@ export class LocalBookmark implements TLocalBookmark {
       searchFilter.isFavorite = 1
     }
     return db.localBookmarks.where(searchFilter).filter((row) => {
-      let s = row.header + row.tags + row.text + row.url;
-      row.sublinks.forEach((currentval) => {
-        s = s + currentval.header + currentval.text + currentval.url
-      })
+      let s = row.tags.join(" ")
+      if (!row.isFreetextTagsOnly){
+        s = s + row.header  + row.text + row.url;
+        row.sublinks.forEach((currentval) => {
+          s = s + currentval.header + currentval.text + currentval.url
+        })
+      }
+
       const re = new RegExp(expr, "g");
       return re.test(s.toLowerCase())
     }).toArray(a => a.sort(sortOrderFunc))
