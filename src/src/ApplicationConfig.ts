@@ -13,7 +13,7 @@ class ApplicationConfig {
   defaultExternalSearchId = 1;
   isHomeSearchLocal = true;
   isHomeSearchInternet = true;
-  searchType: SearchTypes = SearchTypes.TAGS
+  searchType: SearchTypes = SearchTypes.FULLTEXT
 
   load() {
     const config = localStorage.getItem(localStorageTar)
