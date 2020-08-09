@@ -22,7 +22,7 @@
     <b-row>
       <b-col sm>
         <b-form-input
-          type="search"
+          type="input"
           :placeholder="getSearchPlaceholder"
           v-model="searchText"
           v-bind:style="{ direction: dirStyle}"
