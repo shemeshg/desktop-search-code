@@ -19,7 +19,7 @@
       </b-media>
 
       <b-link class="mr-1" v-on:click="doDeleteItem(item.id, idx)">Delete</b-link>|
-      <b-link class="mr-1" v-on:click="doEditItem(item.id)">Edit</b-link>|
+       <router-link :to="{ name: 'localBookmark', params: { id: item.id.toString()  }}">Edit</router-link>|
       <b-badge
         variant="success"
         v-if="!item.relatedSubject"
