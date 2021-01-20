@@ -13,6 +13,7 @@ Vue.config.productionTip = false
 new Vue({
   setup(){
     provide("vuex-store", store);
+    provide("router", router);
   },
   router,
   store,

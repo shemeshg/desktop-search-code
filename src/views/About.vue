@@ -66,6 +66,8 @@ export default defineComponent({
     const store = inject("vuex-store");
 
     onMounted(() => {
+      console.log(router)
+      debugger;
       store.state.pageName = "About";
     });
     return {};

@@ -5,14 +5,15 @@
 </template>
 
 <script>
+import { defineComponent } from '@vue/composition-api'
 // @ is an alias to /src
 import LocalBookmark from '@/components/LocalBookmark.vue'
 
-export default {
+export default defineComponent({
   components: {
     LocalBookmark,
   },
   props: ['id']
 
-}
+})
 </script>
