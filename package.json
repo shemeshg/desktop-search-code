@@ -1,10 +1,9 @@
 {
   "name": "desktop-search",
-  "productName": "Bookmark Manager",
-  "author": "iuqwer9 <iuqwer9@sourceforge.net> (https://sourceforge.net/u/iuqwer9/profile/)",
-  "description": "Bookmark Manager",
   "version": "0.4.0",
   "private": true,
+  "description": "Bookmark Manager",
+  "author": "iuqwer9 <iuqwer9@sourceforge.net> (https://sourceforge.net/u/iuqwer9/profile/)",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -38,13 +37,13 @@
     "@types/node": "^12.12.50",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-babel": "~4.4.0",
-    "@vue/cli-plugin-eslint": "~4.4.0",
-    "@vue/cli-plugin-pwa": "~4.4.0",
-    "@vue/cli-plugin-router": "~4.4.0",
-    "@vue/cli-plugin-typescript": "~4.4.0",
-    "@vue/cli-plugin-vuex": "~4.4.0",
-    "@vue/cli-service": "~4.4.0",
+    "@vue/cli-plugin-babel": "~4.5.10",
+    "@vue/cli-plugin-eslint": "~4.5.10",
+    "@vue/cli-plugin-pwa": "~4.5.10",
+    "@vue/cli-plugin-router": "~4.5.10",
+    "@vue/cli-plugin-typescript": "~4.5.10",
+    "@vue/cli-plugin-vuex": "~4.5.10",
+    "@vue/cli-service": "~4.5.10",
     "@vue/eslint-config-typescript": "^5.0.2",
     "electron": "^9.0.0",
     "electron-devtools-installer": "^3.1.0",
@@ -56,8 +55,9 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
-    "vue-cli-plugin-bootstrap-vue": "~0.6.0",
-    "vue-cli-plugin-electron-builder": "~2.0.0-rc.4",
+    "vue-cli-plugin-bootstrap-vue": "^0.7.0",
+    "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "productName": "Bookmark Manager"
 }
