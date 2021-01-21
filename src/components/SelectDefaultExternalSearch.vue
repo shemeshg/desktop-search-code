@@ -5,29 +5,46 @@
       v-bind:key="option.uuid"
       v-bind:value="option.id"
       :selected="option.id == selectedExternalSearchId"
-    >{{ option.name }}</option>
+    >
+      {{ option.name }}
+    </option>
   </select>
 </template>
 <script lang="ts">
-import { mapState } from "vuex";
-
-import { Component, Vue } from "vue-property-decorator";
 import { TExternalSearch } from "../src/dxdb/externalSearch";
 
-@Component({
-  computed: {
-    ...mapState(["selectedExternalSearchId", "externalSearchs"])
-  }
-})
-export default class SelectDefaultExternalSearch extends Vue {
-  selectedExternalSearchId!: number;
-  externalSearchs!: TExternalSearch[];
+import {
+  defineComponent,
+  inject,
+  computed,
+  ComputedRef,
+} from "@vue/composition-api";
 
-  // eslint-disable-next-line
-  emitSelectedExternalSearchId(e: any) {
-    this.$store.commit("emitSelectedExternalSearchId", Number(e.target.value));
-  }
-}
+export default defineComponent({
+  setup() {
+    // eslint-disable-next-line
+    const store: any = inject("vuex-store");
+
+    const selectedExternalSearchId: ComputedRef<number> = computed(() => {
+      return store.state.selectedExternalSearchId;
+    });
+
+    const externalSearchs: ComputedRef<TExternalSearch[]> = computed(() => {
+      return store.state.externalSearchs;
+    });
+
+    // eslint-disable-next-line
+    const emitSelectedExternalSearchId = (e: any) => {
+      store.commit("emitSelectedExternalSearchId", Number(e.target.value));
+    };
+
+    return {
+      selectedExternalSearchId,
+      externalSearchs,
+      emitSelectedExternalSearchId,
+    };
+  },
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

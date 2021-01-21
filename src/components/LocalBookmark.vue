@@ -58,113 +58,133 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
 import { LocalBookmark as LocalBookmarkClass } from "../src/dxdb/localBookmark";
 import { SubLink } from "../src/genericSearchResult";
 
-import { mapState } from "vuex";
+import {
+  defineComponent,
+  inject,
+  ComputedRef,
+  computed,
+  ref,
+  Ref,
+  onMounted,
+  getCurrentInstance,
+} from "@vue/composition-api";
 
-@Component({
-  computed: {
-    ...mapState(["selectedWorkbookId"]),
-  },
-})
-export default class LocalBookmark extends Vue {
-  @Prop() private id!: string;
-  selectedWorkbookId!: number;
+export default defineComponent({
+    props: {
+    id: {
+      type: String,
+      required: true
+    }
+    }
+  ,
+  setup(props) {
+    const root = getCurrentInstance()
+    
+    // eslint-disable-next-line
+    const store: any = inject("vuex-store");
+    // eslint-disable-next-line
+    const router: any = inject("router");
 
-  localBookmark = new LocalBookmarkClass(undefined);
-  tags = "";
-  feelLucy = false;
-  sublinks: SubLink[] = [];
-  isFavorite = false;
+    const selectedWorkbookId: ComputedRef<number> = computed(() => {
+      return store.state.workbooks;
+    });
 
-  doToggleLucky() {
-    this.feelLucy = !this.feelLucy;
+
+  const localBookmark = ref(new LocalBookmarkClass(undefined));
+  const tags = ref("");
+  const feelLucy = ref(false);
+  const sublinks: Ref<SubLink[]> = ref([]);
+  const isFavorite = ref(false);
+
+  const doToggleLucky = ()=> {
+    feelLucy.value = !feelLucy.value;
   }
 
-  doToggleFavorite() {
-    this.isFavorite = !this.isFavorite;
+  const doToggleFavorite = () =>{
+    isFavorite.value= !isFavorite.value;
   }
 
-  mounted() {
-    this.$store.state.pageName = "Edit bookmarks";
+  onMounted(()=> {
+    store.state.pageName = "Edit bookmarks";
+  })
+
+  const doDelSublink = (idx: number) => {
+    sublinks.value.splice(idx, 1);
   }
 
-  doDelSublink(idx: number) {
-    this.sublinks.splice(idx, 1);
-  }
-
-  doAddSublink() {
+  const doAddSublink = ()=> {
     const s = new SubLink();
     s.header = "";
     s.url = "";
     s.text = "";
-    this.sublinks.push(s);
+    sublinks.value.push(s);
   }
 
-  async doDelete() {
-    if (this.id.substr(0, 2) === "-2") {
+  const  doDelete = async () => {
+    if (props.id.substr(0, 2) === "-2") {
 
         window.close();
 
-      this.$router.replace({
+      router.replace({
         name: "Home",
       });      
 
       return;
     }
 
-    const id = parseInt(this.id);
+    const id = parseInt(props.id);
     if (id >= 0) {
       await LocalBookmarkClass.deleteById(id);
     }
-    this.$router.back();
+    router.back();
   }
 
-  async doSave() {
+  const doSave = async () => {
     // eslint-disable-next-line
-    const refs: any = this.$refs;
+    const refs: any = root?.refs;
     if (!refs.form1.checkValidity() || !refs.form2.checkValidity()) {
       refs.form1.reportValidity();
       refs.form2.reportValidity();
       return;
     }
-    await this.localBookmark.moveToWorkbook(this.selectedWorkbookId);
+    await localBookmark.value.moveToWorkbook(selectedWorkbookId.value);
 
-    const elms = this.tags.split("\n");
-    this.localBookmark.tags = [];
-    this.localBookmark.relatedSubject = !this.feelLucy;
-    this.localBookmark.isFavorite = this.isFavorite ? 1 : 0;
+    const elms = tags.value.split("\n");
+    localBookmark.value.tags = [];
+    localBookmark.value.relatedSubject = !feelLucy;
+    localBookmark.value.isFavorite = isFavorite ? 1 : 0;
     
 
-    elms.forEach((e) => {
+    elms.forEach((e: string) => {
       if (!(e === "")) {
-        this.localBookmark.tags.push(e.toLowerCase().trim());
+        localBookmark.value.tags.push(e.toLowerCase().trim());
       }
     });
-    await this.localBookmark.save();
+    await localBookmark.value.save();
 
-    if (this.id.substr(0, 2) === "-2") {
+    if (props.id.substr(0, 2) === "-2") {
 
       window.close();
 
-      this.$router.replace({
+      router.replace({
         name: "Home",
       });  
     } else {
-      this.$router.back();
+      router.back();
     }
   }
 
-  async created() {
+  const  created = async() => {
     let id = -1;
-    if (this.id.substr(0, 2) === "-2") {
-      const parsed = JSON.parse(decodeURIComponent(this.id.substr(2)));
+    if (props.id.substr(0, 2) === "-2") {
+      const parsed = JSON.parse(decodeURIComponent(props.id.substr(2)));
 
-      this.localBookmark.header = parsed.title;
-      this.localBookmark.text = parsed.description;
-      this.localBookmark.url = parsed.url;
+      localBookmark.value.header = parsed.title;
+      localBookmark.value.text = parsed.description;
+      localBookmark.value.url = parsed.url;
 
       let parsedAry = parsed.keywords.split(",");
       parsedAry.push(parsed.hostname);
@@ -175,21 +195,37 @@ export default class LocalBookmark extends Vue {
         return row !== "";
       });
 
-      this.tags = parsedAry.join("\n");
+      tags.value = parsedAry.join("\n");
     } else {
-      id = parseInt(this.id);
+      id = parseInt(props.id);
     }
 
     if (id > 0) {
       const t = await LocalBookmarkClass.getById(id);
-      this.localBookmark = new LocalBookmarkClass(t);
-      this.tags = this.localBookmark.tags.join("\n");
-      this.feelLucy = !this.localBookmark.relatedSubject;
-      this.isFavorite = Boolean(this.localBookmark.isFavorite);
+      localBookmark.value = new LocalBookmarkClass(t);
+      tags.value = localBookmark.value.tags.join("\n");
+      feelLucy.value = !localBookmark.value.relatedSubject;
+      isFavorite.value = Boolean(localBookmark.value.isFavorite);
     }
-    this.sublinks = this.localBookmark.sublinks;
+    sublinks.value = localBookmark.value.sublinks;    
   }
+
+  return {selectedWorkbookId,
+        localBookmark,
+        tags,
+        feelLucy, 
+        sublinks,
+        isFavorite,
+        doToggleLucky,
+        doToggleFavorite,
+        doDelSublink,
+        doAddSublink,
+        doDelete,
+        doSave,
+        created,
+        }
 }
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -170,10 +170,12 @@ import {
   inject,
   computed,
   ComputedRef,
+  getCurrentInstance,
 } from "@vue/composition-api";
 
 export default defineComponent({
-  setup(prps, { root }) {
+  setup() {
+    const root = getCurrentInstance()
     // eslint-disable-next-line
     const store: any = inject("vuex-store");
     // eslint-disable-next-line
@@ -363,7 +365,7 @@ window.open(url, "_blank");
     // eslint-disable-next-line
     const doImportBookmarks = async (target: any) => {
       // eslint-disable-next-line
-      const el: any = root.$refs.el;
+      const el: any = root?.refs.el;
       const str = await Util.readFileAsString(el);
 
       el.value = "";
