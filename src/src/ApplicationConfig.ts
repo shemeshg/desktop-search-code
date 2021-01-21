@@ -16,12 +16,12 @@ class ApplicationConfig {
   searchType: SearchTypes = SearchTypes.FULLTEXT
 
   load() {
-    const config = localStorage.getItem(localStorageTar)
+    const config = localStorage.getItem(localStorageTar) 
     if (config === null) {
       localStorage.setItem(localStorageTar, JSON.stringify(this));      
     } else {
       const json = JSON.parse(config)
-      this.defaultWorkbookId = json.defaultWorkbookId
+      this.defaultWorkbookId = json.defaultWorkbookId 
       this.defaultExternalSearchId = json.defaultExternalSearchId
       this.isHomeSearchLocal = json.isHomeSearchLocal;
       this.isHomeSearchInternet = json.isHomeSearchInternet;

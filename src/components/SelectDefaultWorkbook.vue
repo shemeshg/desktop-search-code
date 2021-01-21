@@ -25,7 +25,7 @@ export default defineComponent({
     const store: any = inject("vuex-store");
 
     const selectedWorkbookId: ComputedRef<number> = computed(() => {
-      return store.state.workbooks;
+      return store.state.selectedWorkbookId;
     });
 
     const workbooks: ComputedRef<TWorkbook[]> = computed(() => {
@@ -34,6 +34,7 @@ export default defineComponent({
 
     // eslint-disable-next-line
     const emitSelectedWorkbookId = (e: number) => {
+
       store.commit("emitSelectedWorkbookId", e);
     };
 

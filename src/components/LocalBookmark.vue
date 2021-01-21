@@ -89,7 +89,7 @@ export default defineComponent({
     const router: any = inject("router");
 
     const selectedWorkbookId: ComputedRef<number> = computed(() => {
-      return store.state.workbooks;
+      return store.state.selectedWorkbookId;
     });
 
 
@@ -107,9 +107,7 @@ export default defineComponent({
     isFavorite.value= !isFavorite.value;
   }
 
-  onMounted(()=> {
-    store.state.pageName = "Edit bookmarks";
-  })
+
 
   const doDelSublink = (idx: number) => {
     sublinks.value.splice(idx, 1);
@@ -154,8 +152,8 @@ export default defineComponent({
 
     const elms = tags.value.split("\n");
     localBookmark.value.tags = [];
-    localBookmark.value.relatedSubject = !feelLucy;
-    localBookmark.value.isFavorite = isFavorite ? 1 : 0;
+    localBookmark.value.relatedSubject = !feelLucy.value;
+    localBookmark.value.isFavorite = isFavorite.value ? 1 : 0;
     
 
     elms.forEach((e: string) => {
@@ -210,6 +208,11 @@ export default defineComponent({
     sublinks.value = localBookmark.value.sublinks;    
   }
 
+  onMounted( async ()=> {
+    store.state.pageName = "Edit bookmarks";
+    await created()
+  })
+
   return {selectedWorkbookId,
         localBookmark,
         tags,
@@ -222,7 +225,7 @@ export default defineComponent({
         doAddSublink,
         doDelete,
         doSave,
-        created,
+ 
         }
 }
 })
