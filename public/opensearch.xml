@@ -8,4 +8,5 @@
     <Image rel="icon" type="image/png" height="16" width="16" href="/desktop-search/img/icons/favicon-16x16.png"></Image>    
     <Url rel="results" type="text/html" method="get" template="https://shemeshg.github.io/desktop-search/?r&amp;q={searchTerms}"/>    
     <Url rel="self" type="application/opensearchdescription+xml" template="https://shemeshg.github.io/desktop-search/opensearch.xml"/>
+     <Url type="application/x-moz-keywordsearch" template="ds,jkjk"/>
 </OpenSearchDescription>
