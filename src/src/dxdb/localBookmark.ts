@@ -157,7 +157,6 @@ export class LocalBookmark implements TLocalBookmark {
     if (onlyFavorites){
       searchFilter.isFavorite = 1
     }
-    debugger;
     return db.localBookmarks.where(searchFilter).filter((row) => {
       let s = row.tags.join(" ")
       if (!row.isFreetextTagsOnly){

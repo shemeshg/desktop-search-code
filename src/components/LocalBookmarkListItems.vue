@@ -72,7 +72,7 @@ export default defineComponent({
       type: Array, //TLocalBookmark[]
       required: true
     },
-    user: {
+    showTags: {
       type: Boolean,
       required: false
     }

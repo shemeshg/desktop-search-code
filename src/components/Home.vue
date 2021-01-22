@@ -243,7 +243,6 @@ export default defineComponent({
         onlyFavorites,
         selectedWorkbookId
       );
-      debugger;
       
       seeAlso.value = [];
 
@@ -369,8 +368,10 @@ export default defineComponent({
             "r"
           )
         ) {
+          router.push(router.app.$route.path)
           return doRedirect();
         } else {
+          router.push(router.app.$route.path)
           return doSearch();
         }
       }
