@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container fluid>
-      <h1>Bookmark Manager v0.15.0</h1>
+      <h1>Bookmark Manager v1.0.0</h1>
       <p>Search duckduckgo api</p>
       <p>Redirect search of duckduckgo, google or any other search engine.</p>
       <p>
@@ -30,7 +30,7 @@
       <ul>
         <li><strong>shemeshg</strong></li>
       </ul>
-      <h2>License</h2>
+      <h2>License (MIT)</h2>
       <p>Copyright 2020 shemeshg</p>
       <p>
         Permission is hereby granted, free of charge, to any person obtaining a
