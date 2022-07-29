@@ -15,7 +15,7 @@ cp ../404.html .
 # if you are deploying to a custom domain
 # echo 'www.example.com' > CNAME
 
-echo "# v0.080 desktop-search  http://shemeshg.github.io/desktop-search" >> README.md
+echo "# v1.0.1 desktop-search  http://shemeshg.github.io/desktop-search" >> README.md
 
 git init
 git add -A
