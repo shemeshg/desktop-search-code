@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container fluid>
-      <h1>Bookmark Manager v1.0.0</h1>
+      <h1>Bookmark Manager v1.0.1</h1>
       <p>Search duckduckgo api</p>
       <p>Redirect search of duckduckgo, google or any other search engine.</p>
       <p>
@@ -17,7 +17,7 @@
         Tag search - Use expretion like
           A and (b or c)
         Fulltext - use javascript regexp like
-          (a | b)
+          (a|b)
           hello w.*rd
       </pre>
       <h2>Admin</h2>

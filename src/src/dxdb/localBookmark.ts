@@ -166,7 +166,7 @@ export class LocalBookmark implements TLocalBookmark {
         })
       }
 
-      const re = new RegExp(expr, "g");
+      const re = new RegExp(expr, "gi");
       return re.test(s.toLowerCase())
     }).toArray(a => a.sort(sortOrderFunc))
 
